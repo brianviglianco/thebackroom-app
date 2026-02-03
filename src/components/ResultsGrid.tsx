@@ -5,16 +5,12 @@ import TacticCard from './TacticCard';
 
 const TACTICS = [
   {
-    id: 1,
     formation: '4-2-3-1',
-    version: 'FM26',
-    versionNum: 'v1.0',
+    version: 'FM26 · v1.0',
     title: "Bielsa's Vertical Hell",
     creator: 'WorkTheSpace',
-    tags: [
-      { label: 'High Press', type: 'style' as const },
-      { label: 'Mid-Table', type: 'level' as const },
-    ],
+    style: 'High Press',
+    level: 'Mid-Table',
     rating: 4.7,
     reviewCount: 89,
     winRate: 81,
@@ -37,16 +33,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 2,
     formation: '4-3-3',
-    version: 'FM26',
-    versionNum: 'v3.2',
+    version: 'FM26 · v3.2',
     title: "Guardiola's Ghost",
     creator: 'TacticalPadre',
-    tags: [
-      { label: 'Counter-Attack', type: 'style' as const },
-      { label: 'Underdog', type: 'level' as const },
-    ],
+    style: 'Counter-Attack',
+    level: 'Underdog',
     rating: 4.3,
     reviewCount: 142,
     winRate: 73,
@@ -69,16 +61,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 3,
     formation: '4-3-3',
-    version: 'FM25',
-    versionNum: 'v5.2',
+    version: 'FM25 · v5.2',
     title: "Knap's Standard",
     creator: 'Knap',
-    tags: [
-      { label: 'Possession', type: 'style' as const },
-      { label: 'Top Club', type: 'level' as const },
-    ],
+    style: 'Possession',
+    level: 'Top Club',
     rating: 4.8,
     reviewCount: 203,
     winRate: 82,
@@ -98,16 +86,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 4,
     formation: '4-2-3-1',
-    version: 'FM26',
-    versionNum: 'v1.3',
+    version: 'FM26 · v1.3',
     title: 'Sacchi Reborn',
     creator: 'RDFTactics',
-    tags: [
-      { label: 'High Press', type: 'style' as const },
-      { label: 'Top Club', type: 'level' as const },
-    ],
+    style: 'High Press',
+    level: 'Top Club',
     rating: 4.6,
     reviewCount: 98,
     winRate: 77,
@@ -127,16 +111,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 5,
     formation: '5-3-2',
-    version: 'FM26',
-    versionNum: 'v2.1',
+    version: 'FM26 · v2.1',
     title: 'The Sardine Can',
     creator: 'BustTheNet',
-    tags: [
-      { label: 'Counter-Attack', type: 'style' as const },
-      { label: 'Lower League', type: 'level' as const },
-    ],
+    style: 'Counter-Attack',
+    level: 'Lower League',
     rating: 4.1,
     reviewCount: 67,
     winRate: 73,
@@ -156,16 +136,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 6,
     formation: '4-3-3',
-    version: 'FM26',
-    versionNum: 'v4.0',
+    version: 'FM26 · v4.0',
     title: 'Fortress Europa',
     creator: 'DoctorBenjy',
-    tags: [
-      { label: 'Balanced', type: 'style' as const },
-      { label: 'Underdog', type: 'level' as const },
-    ],
+    style: 'Balanced',
+    level: 'Underdog',
     rating: 4.0,
     reviewCount: 54,
     winRate: 68,
@@ -185,16 +161,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 7,
     formation: '4-3-3',
-    version: 'FM26',
-    versionNum: 'v2.0',
+    version: 'FM26 · v2.0',
     title: 'Budapest Blitz',
     creator: 'SecondYellow',
-    tags: [
-      { label: 'Direct', type: 'style' as const },
-      { label: 'Underdog', type: 'level' as const },
-    ],
+    style: 'Direct',
+    level: 'Underdog',
     rating: 3.9,
     reviewCount: 43,
     winRate: 55,
@@ -214,16 +186,12 @@ const TACTICS = [
     ],
   },
   {
-    id: 8,
     formation: '4-4-2',
-    version: 'FM26',
-    versionNum: 'v1.1',
+    version: 'FM26 · v1.1',
     title: 'The Low Block',
     creator: 'FM_Alchemist',
-    tags: [
-      { label: 'Counter-Attack', type: 'style' as const },
-      { label: 'Lower League', type: 'level' as const },
-    ],
+    style: 'Counter-Attack',
+    level: 'Lower League',
     rating: 4.2,
     reviewCount: 71,
     winRate: 71,
@@ -304,8 +272,8 @@ export default function ResultsGrid({ expanded, onExpand }: ResultsGridProps) {
 
           {/* Tactics grid */}
           <div className="grid grid-cols-4 gap-3.5 mb-4">
-            {TACTICS.map((tactic) => (
-              <TacticCard key={tactic.id} {...tactic} />
+            {TACTICS.map((tactic, index) => (
+              <TacticCard key={index} {...tactic} />
             ))}
 
             {/* Submit CTA inline card */}
