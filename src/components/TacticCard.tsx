@@ -133,7 +133,7 @@ export default function TacticCard({
       )}
 
       {/* Card head - 3 faces */}
-      <div className="h-[88px] relative overflow-hidden">
+      <div className="h-[105px] relative overflow-hidden">
         {/* Face 1: Formation */}
         <div 
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-800 ${
@@ -154,7 +154,7 @@ export default function TacticCard({
           {positions.map((pos, i) => (
             <div
               key={i}
-              className="absolute w-1.5 h-1.5 bg-copper rounded-full shadow-[0_0_8px_rgba(196,135,90,0.4)] transition-all duration-400"
+              className="absolute w-2 h-2 bg-copper rounded-full shadow-[0_0_10px_rgba(196,135,90,0.4)] transition-all duration-400"
               style={{ top: pos.top, left: pos.left }}
             />
           ))}
@@ -200,13 +200,13 @@ export default function TacticCard({
       </div>
 
       {/* Card body */}
-      <div className="p-3.5 pt-3">
+      <div className="p-4 pt-3.5">
         {/* Top line */}
         <div className="flex items-center gap-1.5 mb-1">
-          <span className="font-mono text-[10px] font-medium text-copper bg-copper-dim border border-[rgba(196,135,90,0.15)] rounded px-1.5 py-px whitespace-nowrap">
+          <span className="font-mono text-[11px] font-medium text-copper bg-copper-dim border border-[rgba(196,135,90,0.15)] rounded px-1.5 py-px whitespace-nowrap">
             {formation}
           </span>
-          <span className="font-mono text-[8px] tracking-[0.08em] text-cream-muted uppercase">
+          <span className="font-mono text-[9px] tracking-[0.08em] text-cream-muted uppercase">
             {version}
           </span>
         </div>
@@ -217,7 +217,7 @@ export default function TacticCard({
         </h3>
 
         {/* Creator */}
-        <div className="text-[11px] text-cream-muted mb-2">
+        <div className="text-[12px] text-cream-muted mb-2">
           by <a href="#" className="text-cream-secondary transition-colors duration-300 hover:text-copper">{creator}</a>
         </div>
 
@@ -230,11 +230,11 @@ export default function TacticCard({
         {/* Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <div className="flex items-center gap-1.5">
-            <div className="flex gap-px text-[11px]">
+            <div className="flex gap-px text-[12px]">
               {renderStars()}
             </div>
             <span className="font-mono text-xs font-medium">{rating.toFixed(1)}</span>
-            <span className="font-mono text-[9px] text-cream-muted">({reviewCount})</span>
+            <span className="font-mono text-[10px] text-cream-muted">({reviewCount})</span>
           </div>
           <span className={`wr-badge ${getWinRateClass()}`}>
             {winRate}% Win Rate

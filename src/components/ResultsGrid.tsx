@@ -271,7 +271,7 @@ export default function ResultsGrid({ expanded, onExpand }: ResultsGridProps) {
           </div>
 
           {/* Tactics grid */}
-          <div className="grid grid-cols-4 gap-3.5 mb-4">
+          <div className="grid grid-cols-4 gap-4 mb-4">
             {TACTICS.map((tactic, index) => (
               <TacticCard key={index} {...tactic} />
             ))}

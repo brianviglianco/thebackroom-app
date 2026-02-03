@@ -48,10 +48,10 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         />
 
         {/* Header */}
-        <div className="px-7 py-5 pb-4 flex items-center justify-between border-b border-border">
+        <div className="px-8 py-6 pb-5 flex items-center justify-between border-b border-border">
           <div className="flex items-baseline gap-2.5">
-            <h2 className="font-serif text-[22px] font-normal">Explore Tactics</h2>
-            <span className="text-[13px] text-cream-muted font-light">Select filters to find your tactic</span>
+            <h2 className="font-serif text-[24px] font-normal">Explore Tactics</h2>
+            <span className="text-[14px] text-cream-muted font-light">Select filters to find your tactic</span>
           </div>
           <button className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper bg-transparent border-none">
             Reset all filters
@@ -61,28 +61,28 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         {/* Filter columns */}
         <div className="grid grid-cols-4 border-b border-border">
           {/* Formation */}
-          <div className="p-5 border-r border-border">
-            <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
+          <div className="p-6 border-r border-border">
+            <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">1</span>
               Formation
             </div>
-            <div className="text-[9px] text-cream-faint italic mb-2.5">in possession</div>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="text-[10px] text-cream-faint italic mb-2.5">in possession</div>
+            <div className="grid grid-cols-3 gap-2">
               {FORMATIONS.map((fm) => (
                 <div
                   key={fm.name}
                   onClick={() => setSelectedFormation(fm.name)}
-                  className={`h-[68px] bg-bg border rounded-[7px] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center gap-0.5 p-1.5 ${
+                  className={`h-[80px] bg-bg border rounded-[7px] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center gap-1 p-2 ${
                     selectedFormation === fm.name
                       ? 'border-copper bg-copper-dim shadow-[0_0_12px_var(--copper-dim)]'
                       : 'border-border hover:border-[rgba(196,135,90,0.3)] hover:bg-surface-hover'
                   }`}
                 >
-                  <div className="w-[42px] h-[48px] relative">
+                  <div className="w-[50px] h-[56px] relative">
                     {fm.positions.map((pos, i) => (
                       <div
                         key={i}
-                        className={`absolute w-1 h-1 rounded-full transition-all duration-300 ${
+                        className={`absolute w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                           selectedFormation === fm.name 
                             ? 'bg-copper shadow-[0_0_5px_rgba(196,135,90,0.5)]' 
                             : 'bg-cream-faint'
@@ -91,7 +91,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
                       />
                     ))}
                   </div>
-                  <span className={`font-mono text-[8px] transition-colors duration-300 ${
+                  <span className={`font-mono text-[10px] transition-colors duration-300 ${
                     selectedFormation === fm.name ? 'text-copper' : 'text-cream-faint'
                   }`}>
                     {fm.name}
@@ -100,16 +100,16 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
               ))}
               <div
                 onClick={() => setSelectedFormation('All')}
-                className={`h-[68px] bg-bg border rounded-[7px] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center gap-0.5 p-1.5 ${
+                className={`h-[80px] bg-bg border rounded-[7px] cursor-pointer transition-all duration-300 flex flex-col items-center justify-center gap-1 p-2 ${
                   selectedFormation === 'All'
                     ? 'border-copper bg-copper-dim shadow-[0_0_12px_var(--copper-dim)]'
                     : 'border-border hover:border-[rgba(196,135,90,0.3)] hover:bg-surface-hover'
                 }`}
               >
-                <div className="w-full h-[48px] flex items-center justify-center">
+                <div className="w-full h-[56px] flex items-center justify-center">
                   <span className="font-mono text-[10px] text-cream-muted">Any</span>
                 </div>
-                <span className={`font-mono text-[8px] transition-colors duration-300 ${
+                <span className={`font-mono text-[10px] transition-colors duration-300 ${
                   selectedFormation === 'All' ? 'text-copper' : 'text-cream-faint'
                 }`}>
                   All
@@ -119,12 +119,12 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Playing Style */}
-          <div className="p-5 border-r border-border">
-            <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
+          <div className="p-6 border-r border-border">
+            <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">2</span>
               Playing Style
             </div>
-            <div className="flex gap-1.5 flex-wrap mt-2">
+            <div className="flex gap-1.5 flex-wrap mt-3">
               {STYLES.map((style) => (
                 <span
                   key={style}
@@ -138,12 +138,12 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Team Level */}
-          <div className="p-5 border-r border-border">
-            <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
+          <div className="p-6 border-r border-border">
+            <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">3</span>
               Team Level
             </div>
-            <div className="flex gap-1.5 flex-wrap mt-2">
+            <div className="flex gap-1.5 flex-wrap mt-3">
               {LEVELS.map((level) => (
                 <span
                   key={level}
@@ -157,10 +157,10 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Refine */}
-          <div className="p-5">
-            <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
+          <div className="p-6">
+            <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">4</span>
-              Refine
+              FM Version & Filters
             </div>
             
             {/* Version select */}
@@ -222,7 +222,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         </div>
 
         {/* Bottom action bar */}
-        <div className="px-7 py-4 pb-5 flex items-center gap-4 flex-wrap">
+        <div className="px-7 py-5 pb-6 flex items-center gap-4 flex-wrap">
           <button 
             onClick={onSearch}
             className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5"
