@@ -57,12 +57,11 @@ export default function Hero() {
           thebackroom.fm
         </div>
         <h1 className="font-serif text-hero font-normal leading-[1.08] tracking-tight mb-4">
-          Find the <em className="italic font-light text-copper">right</em><br />
-          Football Manager tactic<br />
+          Find the <em className="italic font-light text-copper">right</em> tactic<br />
           for <em className="italic font-light text-copper">your save</em>
         </h1>
         <p className="text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light mb-7">
-          Structured reviews with win rates, team context, and match data from real saves. Not hype — evidence.
+          Football Manager tactics backed by real saves, real data,<br />and real results.
         </p>
         <div className="flex items-center gap-4">
           <button
