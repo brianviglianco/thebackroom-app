@@ -87,6 +87,17 @@ const REVIEWS = [
     winRate: "77%",
     time: "2 days ago",
   },
+  {
+    initials: "DM",
+    author: "DerMeister",
+    rating: 4.5,
+    quote: "Ran this for two full seasons with Hamburg. The midfield triangle is perfectly balanced — wins the ball high and transitions instantly.",
+    tactic: "Total Voetbal 2.0",
+    formation: "4-3-3",
+    style: "Possession",
+    winRate: "75%",
+    time: "3 days ago",
+  },
 ];
 
 // Period labels for badges - FIX-003: Dynamic text based on toggle
@@ -116,9 +127,9 @@ export default function Community() {
   return (
     <section id="community" className="max-w-[1440px] mx-auto px-12">
       {/* Section header */}
-      <div className="sec-eyebrow">👥 From the Community</div>
+      <div className="sec-eyebrow">👥 The Touchline</div>
       <div className="flex items-baseline justify-between mb-5">
-        <h2 className="font-serif text-section font-normal tracking-tight">Managers & Reviews</h2>
+        <h2 className="font-serif text-section font-normal tracking-tight">Who&apos;s Behind the Tactics</h2>
       </div>
 
       {/* FIX-001: Two-column layout with proper alignment
@@ -162,7 +173,7 @@ export default function Community() {
           style={{ gridColumn: 2, gridRow: 1 }}
         >
           <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cream-secondary flex items-center gap-1.5">
-            💬 Recent Reviews
+            💬 Recent Tactic Reviews
           </div>
         </div>
 

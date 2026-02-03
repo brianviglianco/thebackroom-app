@@ -50,7 +50,7 @@ export default function Navigation() {
           <span className="text-cream-muted text-sm flex-shrink-0">⌕</span>
           <input
             type="text"
-            placeholder="Search tactics..."
+            placeholder="Search anything..."
             className="bg-transparent border-none text-cream text-[13px] font-sans w-full outline-none placeholder:text-cream-muted"
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
