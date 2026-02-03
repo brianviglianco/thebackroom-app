@@ -45,9 +45,9 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
+      {/* Content - FIXED: increased max-width from 540px to 580px */}
       <div 
-        className="relative z-[5] max-w-[540px] pt-[120px] pb-16 flex flex-col justify-center min-h-[520px]"
+        className="relative z-[5] max-w-[580px] pt-[120px] pb-16 flex flex-col justify-center min-h-[520px]"
         style={{ marginLeft: 'max(48px, calc((100vw - 1440px)/2 + 48px))' }}
       >
         <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-copper mb-4 flex items-center gap-2.5">
