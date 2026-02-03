@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "the backroom - Football Manager tactics, rated and reviewed by the community.",
+  title: "The Backroom - Football Manager tactics, rated and reviewed by the community.",
   description: "Find the right Football Manager tactic for your save. Structured reviews with win rates, team context, and match data from real saves. Not hype — evidence.",
   keywords: ["Football Manager", "FM tactics", "FM26", "FM25", "tactics", "formations", "counter attack", "possession"],
   authors: [{ name: "The Backroom" }],
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     apple: '/icon.svg',
   },
   openGraph: {
-    title: "the backroom - Football Manager tactics, rated and reviewed by the community.",
+    title: "The Backroom - Football Manager tactics, rated and reviewed by the community.",
     description: "Find the right Football Manager tactic for your save. Structured reviews with win rates, team context, and match data from real saves.",
     url: "https://thebackroom.fm",
     siteName: "The Backroom",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "the backroom - Football Manager tactics, rated and reviewed by the community.",
+    title: "The Backroom - Football Manager tactics, rated and reviewed by the community.",
     description: "Find the right Football Manager tactic for your save.",
   },
 };
