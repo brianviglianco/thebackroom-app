@@ -26,6 +26,7 @@ const MANAGERS = [
     avgRating: 4.6,
     downloads: "15.1k",
     avgWinRate: "78%",
+    bestTactic: "Bielsa's Vertical Hell · ★ 4.7",
   },
   {
     rank: 3,
@@ -37,6 +38,7 @@ const MANAGERS = [
     avgRating: 4.3,
     downloads: "41.2k",
     avgWinRate: "76%",
+    bestTactic: "Knap's Standard · ★ 4.8",
   },
 ];
 
@@ -112,7 +114,7 @@ export default function Community() {
   const periodLabels = PERIOD_LABELS[period] || PERIOD_LABELS['this-week'];
 
   return (
-    <section className="max-w-[1440px] mx-auto px-12">
+    <section id="community" className="max-w-[1440px] mx-auto px-12">
       {/* Section header */}
       <div className="sec-eyebrow">👥 From the Community</div>
       <div className="flex items-baseline justify-between mb-5">
@@ -155,12 +157,12 @@ export default function Community() {
         </div>
 
         {/* Row 1: Header (right) */}
-        <div 
+        <div
           className="pb-4 min-h-[42px] flex items-end"
           style={{ gridColumn: 2, gridRow: 1 }}
         >
-          <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-cream-muted flex items-center gap-1.5">
-            💬 Fresh Reviews
+          <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cream-secondary flex items-center gap-1.5">
+            💬 Recent Reviews
           </div>
         </div>
 
@@ -246,11 +248,11 @@ export default function Community() {
                 </div>
               </div>
 
-              {/* Best tactic (featured only) */}
-              {mgr.isFeatured && mgr.bestTactic && (
-                <div className="pt-3 border-t border-border flex items-center gap-2">
+              {/* Best tactic */}
+              {mgr.bestTactic && (
+                <div className={`pt-3 border-t border-border flex items-center gap-2 ${mgr.isFeatured ? '' : 'mt-3'}`}>
                   <span className="font-mono text-[9px] text-cream-muted tracking-[0.1em] uppercase flex-shrink-0">Best tactic:</span>
-                  <span className="font-serif text-[13px] font-medium text-copper transition-colors duration-300 hover:text-copper-bright">
+                  <span className={`font-serif font-medium text-copper transition-colors duration-300 hover:text-copper-bright ${mgr.isFeatured ? 'text-[13px]' : 'text-[12px]'}`}>
                     {mgr.bestTactic}
                   </span>
                 </div>

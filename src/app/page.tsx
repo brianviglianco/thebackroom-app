@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Navigation, Hero, FilterCard, ResultsGrid, StaffPicks, Community, Footer } from '@/components';
+import { Navigation, Hero, FilterCard, ResultsGrid, StaffPicks, Community, Newsletter, Footer } from '@/components';
 
 export default function Home() {
   const [resultsExpanded, setResultsExpanded] = useState(false);
@@ -12,20 +12,25 @@ export default function Home() {
       <Hero />
       <FilterCard />
       <ResultsGrid expanded={resultsExpanded} onExpand={() => setResultsExpanded(true)} />
-      
+
       {/* Spacing before Staff Picks */}
-      <div className="h-[88px]" />
-      
+      <div className="h-[80px]" />
+
       <StaffPicks />
-      
+
       {/* Spacing before Community */}
-      <div className="h-[88px]" />
-      
+      <div className="h-[80px]" />
+
       <Community />
-      
+
+      {/* Spacing before Newsletter */}
+      <div className="h-[72px]" />
+
+      <Newsletter />
+
       {/* Spacing before Footer */}
-      <div className="h-[88px]" />
-      
+      <div className="h-[72px]" />
+
       <Footer />
     </main>
   );

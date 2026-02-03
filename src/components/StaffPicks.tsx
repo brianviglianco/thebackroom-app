@@ -68,7 +68,7 @@ export default function StaffPicks() {
         <div className="flex items-baseline justify-between mb-5">
           <div className="flex items-baseline gap-3">
             <h2 className="font-serif text-section font-normal tracking-tight">Staff Picks</h2>
-            <span className="font-mono text-[11px] text-cream-muted tracking-[0.05em]">Vol. 12 · January 2026</span>
+            <span className="font-mono text-[11px] text-cream-muted tracking-[0.05em]">January 2026</span>
           </div>
           <a href="#" className="text-copper font-mono text-[11px] border-b border-transparent transition-all duration-300 hover:border-copper">
             Past editions →
@@ -146,7 +146,7 @@ export default function StaffPicks() {
                 {featured.positions?.map((pos, i) => (
                   <div
                     key={i}
-                    className="absolute w-[5px] h-[5px] bg-copper rounded-full shadow-[0_0_6px_rgba(196,135,90,0.4)]"
+                    className="absolute w-1.5 h-1.5 bg-copper rounded-full shadow-[0_0_8px_rgba(196,135,90,0.4)]"
                     style={{ top: pos.top, left: pos.left }}
                   />
                 ))}
@@ -197,25 +197,26 @@ export default function StaffPicks() {
                 {pick.rank}
               </div>
               <div>
-                <h3 className="font-serif text-[22px] font-medium tracking-tight mb-1.5 transition-colors duration-300 group-hover:text-copper-bright">
+                <h3 className="font-serif text-[22px] font-medium tracking-tight mb-1 transition-colors duration-300 group-hover:text-copper-bright">
                   {pick.title}
                 </h3>
-                <p className="font-serif italic text-sm text-cream-secondary leading-relaxed mb-2.5 max-w-[640px] line-clamp-2">
+                <div className="text-xs text-cream-muted mb-2">
+                  by <a href="#" className="text-cream-secondary transition-colors duration-300 hover:text-copper">{pick.creator}</a>
+                </div>
+                <p className="font-serif italic text-[13px] text-cream-secondary leading-relaxed mb-3 max-w-[480px] line-clamp-2">
                   &ldquo;{pick.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-cream-muted">
-                    by <a href="#" className="text-cream-secondary transition-colors duration-300 hover:text-copper">{pick.creator}</a>
-                  </span>
+                <div className="flex items-center gap-1.5 mb-2">
                   <span className="tag tag-style">{pick.style}</span>
                   <span className="tag tag-level">{pick.level}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-[11px] text-cream-muted flex items-center gap-1">
-                      <span className="star-filled">★</span> {pick.rating}
-                    </span>
-                    <span className="font-mono text-[11px] text-cream-muted">{pick.winRate}% Win Rate</span>
-                    <span className="font-mono text-[11px] text-cream-muted">{pick.formation} · {pick.version}</span>
-                  </div>
+                  <span className="font-mono text-[10px] font-medium text-copper bg-copper-dim border border-[rgba(196,135,90,0.15)] rounded px-1.5 py-px">{pick.formation}</span>
+                  <span className="font-mono text-[9px] tracking-[0.06em] text-cream-muted uppercase">{pick.version}</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="font-mono text-[11px] text-cream-muted flex items-center gap-1">
+                    <span className="star-filled">★</span> {pick.rating}
+                  </span>
+                  <span className="font-mono text-[11px] text-cream-muted">{pick.winRate}% Win Rate</span>
                 </div>
               </div>
             </div>

@@ -8,6 +8,12 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] bg-[rgba(26,23,20,0.92)] backdrop-blur-[24px] border-b border-[rgba(62,54,44,0.5)]">
+      {/* Top copper accent line */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[1px] opacity-30"
+        style={{ background: 'linear-gradient(90deg, transparent, var(--copper), transparent)' }}
+      />
+
       <div className="max-w-[1440px] mx-auto px-12 h-[54px] flex items-center gap-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
@@ -36,14 +42,14 @@ export default function Navigation() {
         </Link>
 
         {/* Search */}
-        <div 
+        <div
           className={`flex items-center gap-2 bg-surface border border-border rounded-[7px] px-3 py-1.5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex-shrink-0 ${
             searchFocused ? 'w-[520px] border-[rgba(196,135,90,0.3)] shadow-[0_0_16px_var(--copper-dim)]' : 'w-[260px]'
           }`}
         >
           <span className="text-cream-muted text-sm flex-shrink-0">⌕</span>
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="Search tactics..."
             className="bg-transparent border-none text-cream text-[13px] font-sans w-full outline-none placeholder:text-cream-muted"
             onFocus={() => setSearchFocused(true)}
@@ -53,19 +59,31 @@ export default function Navigation() {
         </div>
 
         {/* Nav Links */}
-        <ul className="flex gap-7 list-none flex-1 justify-center">
-          <li><Link href="/" className="text-cream text-sm transition-colors duration-300 hover:text-cream">Tactics</Link></li>
-          <li><Link href="/ranking" className="text-cream-muted text-sm transition-colors duration-300 hover:text-cream">Ranking</Link></li>
-          <li><Link href="/managers" className="text-cream-muted text-sm transition-colors duration-300 hover:text-cream">Managers</Link></li>
-          <li><Link href="/about" className="text-cream-muted text-sm transition-colors duration-300 hover:text-cream">About</Link></li>
+        <ul className="flex gap-6 list-none flex-1 justify-center">
+          <li>
+            <Link href="/" className="relative text-cream text-[14px] transition-colors duration-300 hover:text-cream pb-1">
+              Tactics
+              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-copper rounded-full" />
+            </Link>
+          </li>
+          <li><Link href="/ranking" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Ranking</Link></li>
+          <li><Link href="/managers" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Managers</Link></li>
+          <li><Link href="/about" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">About</Link></li>
         </ul>
 
-        {/* Right Buttons */}
+        {/* Right Side */}
         <div className="flex gap-4 ml-auto flex-shrink-0 items-center">
+          {/* Submit Tactic link */}
+          <Link
+            href="/submit"
+            className="font-mono text-[12px] text-copper transition-colors duration-300 hover:text-copper-bright border-r border-border pr-4 flex items-center gap-1"
+          >
+            <span className="text-[14px] leading-none">+</span> Submit
+          </Link>
           <button className="bg-transparent border-none text-cream-muted text-[13px] font-sans cursor-pointer transition-colors duration-300 hover:text-cream p-0">
             Log in
           </button>
-          <button className="px-[18px] py-[7px] bg-copper border-none rounded-md text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 tracking-tight hover:bg-copper-bright hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(196,135,90,0.3)]">
+          <button className="px-[18px] py-[7px] bg-copper border-none rounded-md text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 tracking-tight shadow-[0_2px_10px_rgba(196,135,90,0.2)] hover:bg-copper-bright hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(196,135,90,0.3)]">
             Sign up
           </button>
         </div>

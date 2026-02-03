@@ -39,7 +39,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
   };
 
   return (
-    <div className="max-w-[1440px] mx-auto px-12 pt-10">
+    <div id="explore-tactics" className="max-w-[1440px] mx-auto px-12 pt-10">
       <div className="bg-surface border border-border rounded-[14px] overflow-hidden relative">
         {/* Top accent line */}
         <div 

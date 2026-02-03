@@ -57,25 +57,39 @@ export default function Hero() {
           thebackroom.fm
         </div>
         <h1 className="font-serif text-hero font-normal leading-[1.08] tracking-tight mb-4">
-          Find the right<br />
+          Find the <em className="italic font-light text-copper">right</em><br />
           Football Manager tactic<br />
           for <em className="italic font-light text-copper">your save</em>
         </h1>
-        <p className="text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light">
+        <p className="text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light mb-7">
           Structured reviews with win rates, team context, and match data from real saves. Not hype — evidence.
         </p>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => document.getElementById('explore-tactics')?.scrollIntoView({ behavior: 'smooth' })}
+            className="px-7 py-3 bg-copper border-none rounded-[7px] text-bg text-[14px] font-medium font-sans cursor-pointer transition-all duration-300 shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
+          >
+            Explore Tactics
+          </button>
+          <a href="#community" className="font-mono text-[12px] text-cream-muted transition-colors duration-300 hover:text-copper">
+            Browse managers →
+          </a>
+        </div>
       </div>
 
       {/* Action Feed */}
       <div className="absolute bottom-8 right-9 z-[6] flex flex-col items-end gap-2">
-        <div 
+        <div className="font-mono text-[8px] tracking-[0.15em] uppercase text-cream-faint mb-0.5">
+          Live match sim
+        </div>
+        <div
           className={`font-mono text-[11px] tracking-[0.18em] uppercase text-copper text-right transition-opacity duration-600 ${
             actionFeed.name ? 'opacity-85' : 'opacity-0'
           }`}
         >
           {actionFeed.name}
         </div>
-        <div 
+        <div
           className={`font-mono text-[13px] text-cream-secondary text-right whitespace-nowrap min-h-[20px] transition-opacity duration-500 ${
             actionFeed.action ? 'opacity-100' : 'opacity-0'
           } ${isGoal ? 'text-copper font-medium text-[15px] [text-shadow:0_0_20px_rgba(196,135,90,0.4)]' : ''}`}
