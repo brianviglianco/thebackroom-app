@@ -15,9 +15,9 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="max-w-[1440px] mx-auto px-12">
+    <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
       <div
-        className="relative rounded-xl overflow-hidden p-10 px-12"
+        className="relative rounded-xl overflow-hidden p-6 md:p-10 px-5 md:px-12"
         style={{
           background: 'linear-gradient(135deg, rgba(196,135,90,0.08), rgba(196,135,90,0.03))',
           border: '1px solid rgba(196,135,90,0.15)',
@@ -29,25 +29,25 @@ export default function Newsletter() {
           style={{ background: 'linear-gradient(90deg, transparent, var(--copper), transparent)' }}
         />
 
-        <div className="flex items-center justify-between gap-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-12">
           {/* Left: Copy */}
           <div className="flex-1 max-w-[520px]">
             <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-copper mb-2 flex items-center gap-2">
               <span className="w-[14px] h-[1px] bg-copper" />
               Weekly Digest
             </div>
-            <h3 className="font-serif text-[22px] font-medium tracking-tight mb-2">
+            <h3 className="font-serif text-[20px] md:text-[22px] font-medium tracking-tight mb-2">
               Get the best tactics before everyone else
             </h3>
-            <p className="text-[13px] text-cream-secondary leading-relaxed">
+            <p className="text-[12px] md:text-[13px] text-cream-secondary leading-relaxed">
               Every Friday: top-rated new tactics, trending formations, creator spotlights, and FM tips from the community. Free, no spam, unsubscribe anytime.
             </p>
           </div>
 
           {/* Right: Form */}
-          <div className="flex-shrink-0 w-[400px]">
+          <div className="flex-shrink-0 w-full md:w-[400px]">
             {!submitted ? (
-              <form onSubmit={handleSubmit} className="flex gap-2.5">
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5">
                 <input
                   type="email"
                   value={email}

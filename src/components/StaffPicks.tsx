@@ -61,13 +61,13 @@ export default function StaffPicks() {
   const runners = STAFF_PICKS.slice(1);
 
   return (
-    <div className="bg-bg-warm py-14">
-      <section className="max-w-[1440px] mx-auto px-12">
+    <div className="bg-bg-warm py-10 md:py-14">
+      <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
         {/* Section header */}
         <div className="sec-eyebrow">⭐ Editor&apos;s Selection</div>
-        <div className="flex items-baseline justify-between mb-5">
+        <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4 md:mb-5 gap-1">
           <div className="flex items-baseline gap-3">
-            <h2 className="font-serif text-section font-normal tracking-tight">Staff Picks</h2>
+            <h2 className="font-serif text-[22px] md:text-section font-normal tracking-tight">Staff Picks</h2>
             <span className="font-mono text-[11px] text-cream-muted tracking-[0.05em]">January 2026</span>
           </div>
           <a href="#" className="text-copper font-mono text-[11px] border-b border-transparent transition-all duration-300 hover:border-copper">
@@ -76,41 +76,43 @@ export default function StaffPicks() {
         </div>
 
         {/* Editorial grid */}
-        <div className="grid grid-cols-2 gap-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Featured pick #1 */}
-          <div 
-            className="col-span-full grid gap-6 p-5 px-6 rounded-xl mb-2 relative cursor-pointer transition-all duration-400 group hover:border-[rgba(196,135,90,0.35)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.35),0_0_20px_var(--copper-dim)]"
-            style={{ 
-              gridTemplateColumns: '48px 1fr auto',
+          <div
+            className="col-span-full flex flex-col lg:flex-row gap-4 md:gap-6 p-4 md:p-5 px-4 md:px-6 rounded-xl mb-2 relative cursor-pointer transition-all duration-400 group hover:border-[rgba(196,135,90,0.35)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.35),0_0_20px_var(--copper-dim)]"
+            style={{
               background: 'linear-gradient(135deg, rgba(196,135,90,0.06), rgba(196,135,90,0.02))',
               border: '1px solid rgba(196,135,90,0.12)'
             }}
           >
             {/* Top accent */}
-            <div 
+            <div
               className="absolute top-0 left-0 right-0 h-[1px] opacity-30 rounded-t-xl"
               style={{ background: 'linear-gradient(90deg, transparent, var(--copper), transparent)' }}
             />
 
-            {/* Rank */}
-            <div className="font-serif text-[52px] font-light text-copper leading-none opacity-90 group-hover:opacity-100 transition-opacity">
+            {/* Rank - hidden on small mobile, shown inline */}
+            <div className="hidden md:block font-serif text-[52px] font-light text-copper leading-none opacity-90 group-hover:opacity-100 transition-opacity flex-shrink-0">
               1
             </div>
 
             {/* Content */}
-            <div>
-              <h3 className="font-serif text-[26px] font-medium tracking-tight mb-1.5 transition-colors duration-300 group-hover:text-copper-bright">
-                {featured.title}
-              </h3>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-baseline gap-3 mb-1.5">
+                <span className="md:hidden font-serif text-[32px] font-light text-copper leading-none">1</span>
+                <h3 className="font-serif text-[22px] md:text-[26px] font-medium tracking-tight transition-colors duration-300 group-hover:text-copper-bright">
+                  {featured.title}
+                </h3>
+              </div>
               <p className="font-serif italic text-sm text-cream-secondary leading-relaxed mb-3 max-w-[520px] line-clamp-3">
                 &ldquo;{featured.quote}&rdquo;
               </p>
-              <p className="text-[13px] text-cream-secondary leading-relaxed mb-3 pl-3 border-l-2 border-copper max-w-[520px] font-light">
+              <p className="text-[12px] md:text-[13px] text-cream-secondary leading-relaxed mb-3 pl-3 border-l-2 border-copper max-w-[520px] font-light">
                 {featured.editorNote}
               </p>
               <div className="flex gap-1.5 flex-wrap mb-2.5">
                 {featured.achievements?.map((ach, i) => (
-                  <span 
+                  <span
                     key={i}
                     className="font-mono text-[9px] tracking-[0.04em] px-2.5 py-1 border rounded text-copper flex items-center gap-1 whitespace-nowrap"
                     style={{ background: 'rgba(196,135,90,0.08)', borderColor: 'rgba(196,135,90,0.12)' }}
@@ -130,14 +132,14 @@ export default function StaffPicks() {
                     <span className="star-filled">★</span> {featured.rating}
                   </span>
                   <span className="font-mono text-[11px] text-cream-muted">{featured.winRate}% Win Rate</span>
-                  <span className="font-mono text-[11px] text-cream-muted">{featured.formation} · {featured.version}</span>
+                  <span className="font-mono text-[11px] text-cream-muted hidden sm:inline">{featured.formation} · {featured.version}</span>
                 </div>
               </div>
             </div>
 
-            {/* Visual block */}
-            <div 
-              className="flex items-center gap-5 p-4 px-5 bg-bg border border-border rounded-[10px] min-w-[280px] self-center"
+            {/* Visual block - hidden on small mobile */}
+            <div
+              className="hidden sm:flex items-center gap-5 p-4 px-5 bg-bg border border-border rounded-[10px] min-w-[280px] self-center flex-shrink-0"
             >
               {/* Mini pitch */}
               <div className="w-[100px] h-[110px] bg-pitch-dark rounded-md relative flex-shrink-0 border border-pitch-line">
@@ -151,7 +153,7 @@ export default function StaffPicks() {
                   />
                 ))}
               </div>
-              
+
               {/* Stats */}
               <div className="flex flex-col gap-2.5">
                 <div>
@@ -188,16 +190,15 @@ export default function StaffPicks() {
           {runners.map((pick, idx) => (
             <div
               key={pick.rank}
-              className={`grid gap-5 py-7 border-b border-border cursor-pointer transition-all duration-400 group ${
-                idx === 0 ? 'border-r border-border pr-6' : 'pl-6'
+              className={`flex gap-4 md:gap-5 py-5 md:py-7 border-b border-border cursor-pointer transition-all duration-400 group ${
+                idx === 0 ? 'md:border-r md:border-border md:pr-6' : 'md:pl-6'
               }`}
-              style={{ gridTemplateColumns: '48px 1fr' }}
             >
-              <div className="font-serif text-[40px] font-light text-copper leading-none opacity-70 group-hover:opacity-100 transition-opacity">
+              <div className="font-serif text-[32px] md:text-[40px] font-light text-copper leading-none opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0">
                 {pick.rank}
               </div>
-              <div>
-                <h3 className="font-serif text-[22px] font-medium tracking-tight mb-1 transition-colors duration-300 group-hover:text-copper-bright">
+              <div className="min-w-0">
+                <h3 className="font-serif text-[18px] md:text-[22px] font-medium tracking-tight mb-1 transition-colors duration-300 group-hover:text-copper-bright">
                   {pick.title}
                 </h3>
                 <div className="text-xs text-cream-muted mb-2">
@@ -206,7 +207,7 @@ export default function StaffPicks() {
                 <p className="font-serif italic text-[13px] text-cream-secondary leading-relaxed mb-3 max-w-[480px] line-clamp-2">
                   &ldquo;{pick.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-1.5 mb-2">
+                <div className="flex items-center gap-1.5 mb-2 flex-wrap">
                   <span className="tag tag-style">{pick.style}</span>
                   <span className="tag tag-level">{pick.level}</span>
                   <span className="font-mono text-[10px] font-medium text-copper bg-copper-dim border border-[rgba(196,135,90,0.15)] rounded px-1.5 py-px">{pick.formation}</span>

@@ -125,30 +125,20 @@ export default function Community() {
   const periodLabels = PERIOD_LABELS[period] || PERIOD_LABELS['this-week'];
 
   return (
-    <section id="community" className="max-w-[1440px] mx-auto px-12">
+    <section id="community" className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
       {/* Section header */}
       <div className="sec-eyebrow">👥 The Community</div>
-      <div className="flex items-baseline justify-between mb-5">
-        <h2 className="font-serif text-section font-normal tracking-tight">From the Touchline</h2>
+      <div className="flex items-baseline justify-between mb-4 md:mb-5">
+        <h2 className="font-serif text-[22px] md:text-section font-normal tracking-tight">From the Touchline</h2>
       </div>
 
-      {/* FIX-001: Two-column layout with proper alignment
-          - grid-cols-2: Two equal columns
-          - gap-y-0: No vertical gap (footers align at same baseline)
-          - gap-x-12: 48px horizontal gap between columns
-          - Explicit grid-row assignments ensure rows align */}
-      <div 
-        className="grid grid-cols-2 gap-y-0 gap-x-12"
-        style={{ gridTemplateRows: 'auto 1fr auto', alignItems: 'start' }}
-      >
-        
-        {/* ===== LEFT COLUMN: MANAGERS ===== */}
-        
-        {/* Row 1: Header (left) */}
-        <div 
-          className="flex gap-1 pb-4 min-h-[42px] items-end"
-          style={{ gridColumn: 1, gridRow: 1 }}
-        >
+      {/* Two-column layout on desktop, stacked on mobile */}
+      <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-x-12">
+
+        {/* ===== MANAGERS SECTION ===== */}
+
+        {/* Period toggle */}
+        <div className="flex gap-1 pb-4 min-h-[42px] items-end">
           {['This Week', 'This Month', 'All Time'].map((p) => {
             const periodKey = p.toLowerCase().replace(' ', '-');
             return (
@@ -167,40 +157,34 @@ export default function Community() {
           })}
         </div>
 
-        {/* Row 1: Header (right) */}
-        <div
-          className="pb-4 min-h-[42px] flex items-end"
-          style={{ gridColumn: 2, gridRow: 1 }}
-        >
+        {/* Reviews header - only visible on desktop in 2nd column */}
+        <div className="hidden lg:flex pb-4 min-h-[42px] items-end">
           <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cream-secondary flex items-center gap-1.5">
             💬 Recent Tactic Reviews
           </div>
         </div>
 
-        {/* Row 2: Body (left - managers) */}
-        <div 
-          className="flex flex-col gap-3"
-          style={{ gridColumn: 1, gridRow: 2 }}
-        >
+        {/* Manager cards */}
+        <div className="flex flex-col gap-3">
           {MANAGERS.map((mgr) => (
             <div
               key={mgr.rank}
-              className={`bg-surface border rounded-[10px] p-5 relative overflow-hidden cursor-pointer transition-all duration-400 hover:border-[rgba(196,135,90,0.3)] hover:shadow-[0_8px_28px_rgba(0,0,0,0.3)] ${
-                mgr.isFeatured 
-                  ? 'border-[rgba(196,135,90,0.15)] p-6' 
+              className={`bg-surface border rounded-[10px] p-4 md:p-5 relative overflow-hidden cursor-pointer transition-all duration-400 hover:border-[rgba(196,135,90,0.3)] hover:shadow-[0_8px_28px_rgba(0,0,0,0.3)] ${
+                mgr.isFeatured
+                  ? 'border-[rgba(196,135,90,0.15)] md:p-6'
                   : 'border-border'
               }`}
               style={mgr.isFeatured ? { background: 'linear-gradient(135deg, rgba(196,135,90,0.06), rgba(196,135,90,0.02))' } : undefined}
             >
               {/* Featured accent */}
               {mgr.isFeatured && (
-                <div 
+                <div
                   className="absolute top-0 left-0 right-0 h-[1px] opacity-40"
                   style={{ background: 'linear-gradient(90deg, transparent, var(--copper), transparent)' }}
                 />
               )}
 
-              {/* Badge - FIX-003: Dynamic text based on period */}
+              {/* Badge */}
               {mgr.isFeatured ? (
                 <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-copper mb-3.5 flex items-center gap-1.5">
                   <span className="text-sm">🏆</span> {periodLabels.featured}
@@ -213,10 +197,10 @@ export default function Community() {
 
               {/* Profile */}
               <div className="flex items-center gap-3.5 mb-3">
-                <div 
+                <div
                   className={`rounded-full flex items-center justify-center font-serif font-semibold flex-shrink-0 ${
-                    mgr.isFeatured 
-                      ? 'w-14 h-14 text-xl border-[2.5px] border-copper text-copper bg-copper-dim shadow-[0_0_18px_rgba(196,135,90,0.25)]'
+                    mgr.isFeatured
+                      ? 'w-12 h-12 md:w-14 md:h-14 text-lg md:text-xl border-[2.5px] border-copper text-copper bg-copper-dim shadow-[0_0_18px_rgba(196,135,90,0.25)]'
                       : 'w-10 h-10 text-sm border-2 border-border text-cream-muted bg-surface-elevated'
                   }`}
                 >
@@ -224,7 +208,7 @@ export default function Community() {
                 </div>
                 <div>
                   <div className={`font-serif font-medium transition-colors duration-300 ${
-                    mgr.isFeatured ? 'text-xl' : 'text-[15px]'
+                    mgr.isFeatured ? 'text-lg md:text-xl' : 'text-[15px]'
                   }`}>
                     {mgr.name}
                   </div>
@@ -239,8 +223,8 @@ export default function Community() {
                 {mgr.bio}
               </p>
 
-              {/* Stats - ALL cards have copper stats (FIX-002 applied) */}
-              <div className={`flex ${mgr.isFeatured ? 'gap-5 mb-3.5' : 'gap-4'}`}>
+              {/* Stats */}
+              <div className={`flex flex-wrap ${mgr.isFeatured ? 'gap-4 md:gap-5 mb-3.5' : 'gap-3 md:gap-4'}`}>
                 <div className="flex flex-col">
                   <span className={`font-mono font-medium text-copper ${mgr.isFeatured ? 'text-[15px]' : 'text-xs'}`}>{mgr.tactics}</span>
                   <span className={`text-cream-muted ${mgr.isFeatured ? 'text-[10px]' : 'text-[9px]'}`}>Tactics</span>
@@ -270,18 +254,31 @@ export default function Community() {
               )}
             </div>
           ))}
+
+          {/* All managers link */}
+          <div className="pt-4 text-center">
+            <a href="#" className="text-copper font-mono text-xs border-b border-transparent transition-all duration-300 hover:border-copper">
+              All managers →
+            </a>
+          </div>
         </div>
 
-        {/* Row 2: Body (right - reviews) */}
-        <div 
-          className="flex flex-col"
-          style={{ gridColumn: 2, gridRow: 2 }}
-        >
+        {/* ===== REVIEWS SECTION ===== */}
+
+        {/* Reviews header - visible on mobile only */}
+        <div className="lg:hidden pt-8 pb-4">
+          <div className="font-mono text-[11px] tracking-[0.12em] uppercase text-cream-secondary flex items-center gap-1.5">
+            💬 Recent Tactic Reviews
+          </div>
+        </div>
+
+        {/* Review cards */}
+        <div className="flex flex-col">
           {REVIEWS.map((review, idx) => (
             <div
               key={idx}
               className={`py-5 cursor-pointer transition-all duration-300 group ${
-                idx === 0 ? 'pt-0' : ''
+                idx === 0 ? 'lg:pt-0' : ''
               } ${idx < REVIEWS.length - 1 ? 'border-b border-border' : 'pb-0'}`}
             >
               {/* Header */}
@@ -310,26 +307,13 @@ export default function Community() {
               </div>
             </div>
           ))}
-        </div>
 
-        {/* Row 3: Footer (left) - FIX-001: Explicit grid position, matching padding */}
-        <div 
-          className="pt-4 text-center"
-          style={{ gridColumn: 1, gridRow: 3 }}
-        >
-          <a href="#" className="text-copper font-mono text-xs border-b border-transparent transition-all duration-300 hover:border-copper">
-            All managers →
-          </a>
-        </div>
-
-        {/* Row 3: Footer (right) - FIX-001: Explicit grid position */}
-        <div 
-          className="pt-3.5 border-t border-border text-center"
-          style={{ gridColumn: 2, gridRow: 3 }}
-        >
-          <a href="#" className="text-copper font-mono text-xs border-b border-transparent transition-all duration-300 hover:border-copper">
-            All reviews →
-          </a>
+          {/* All reviews link */}
+          <div className="pt-3.5 border-t border-border text-center">
+            <a href="#" className="text-copper font-mono text-xs border-b border-transparent transition-all duration-300 hover:border-copper">
+              All reviews →
+            </a>
+          </div>
         </div>
       </div>
     </section>

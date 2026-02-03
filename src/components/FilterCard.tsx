@@ -39,7 +39,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
   };
 
   return (
-    <div id="explore-tactics" className="max-w-[1440px] mx-auto px-12 pt-10">
+    <div id="explore-tactics" className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-8 md:pt-10">
       <div className="bg-surface border border-border rounded-[14px] overflow-hidden relative">
         {/* Top accent line */}
         <div 
@@ -48,20 +48,20 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         />
 
         {/* Header */}
-        <div className="px-8 py-6 pb-5 flex items-center justify-between border-b border-border">
+        <div className="px-4 md:px-8 py-4 md:py-6 pb-4 md:pb-5 flex flex-col md:flex-row md:items-center justify-between border-b border-border gap-2">
           <div className="flex items-baseline gap-2.5">
-            <h2 className="font-serif text-[24px] font-normal">Explore Tactics</h2>
-            <span className="text-[14px] text-cream-muted font-light">Select filters to find your tactic</span>
+            <h2 className="font-serif text-[20px] md:text-[24px] font-normal">Explore Tactics</h2>
+            <span className="text-[12px] md:text-[14px] text-cream-muted font-light hidden sm:inline">Select filters to find your tactic</span>
           </div>
-          <button className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper bg-transparent border-none">
+          <button className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper bg-transparent border-none self-start md:self-auto">
             Reset all filters
           </button>
         </div>
 
         {/* Filter columns */}
-        <div className="grid grid-cols-4 border-b border-border">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b border-border">
           {/* Formation */}
-          <div className="p-6 border-r border-border">
+          <div className="p-4 md:p-6 border-b md:border-b lg:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">1</span>
               Formation
@@ -119,7 +119,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Playing Style */}
-          <div className="p-6 border-r border-border">
+          <div className="p-4 md:p-6 border-b md:border-b lg:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">2</span>
               Playing Style
@@ -138,7 +138,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Team Level */}
-          <div className="p-6 border-r border-border">
+          <div className="p-4 md:p-6 border-b md:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">3</span>
               Team Level
@@ -157,7 +157,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
           </div>
 
           {/* Refine */}
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">4</span>
               FM Version & Filters
@@ -222,27 +222,28 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         </div>
 
         {/* Bottom action bar */}
-        <div className="px-7 py-5 pb-6 flex items-center gap-4 flex-wrap">
-          <button 
+        <div className="px-4 md:px-7 py-4 md:py-5 pb-5 md:pb-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+          <button
             onClick={onSearch}
-            className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5"
+            className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5 self-start"
           >
             Show <span className="font-mono font-medium bg-[rgba(16,14,12,0.25)] px-2 py-0.5 rounded text-xs">23</span> tactics →
           </button>
-          
-          <div className="w-[1px] h-6 bg-border flex-shrink-0" />
-          
-          <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-cream-muted">Quick:</span>
-          
-          <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-            🏰 Best for Lower League FM26
-          </span>
-          <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-            ⚡ Top Counter-Attack Underdogs
-          </span>
-          <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-            🎯 Highest Rated Possession
-          </span>
+
+          <div className="hidden md:block w-[1px] h-6 bg-border flex-shrink-0" />
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+            <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-cream-muted flex-shrink-0">Quick:</span>
+            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
+              🏰 Best for Lower League FM26
+            </span>
+            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
+              ⚡ Top Counter-Attack Underdogs
+            </span>
+            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
+              🎯 Highest Rated Possession
+            </span>
+          </div>
         </div>
       </div>
     </div>

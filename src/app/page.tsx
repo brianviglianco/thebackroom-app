@@ -14,22 +14,22 @@ export default function Home() {
       <ResultsGrid expanded={resultsExpanded} onExpand={() => setResultsExpanded(true)} />
 
       {/* Spacing before Staff Picks */}
-      <div className="h-[80px]" />
+      <div className="h-[48px] md:h-[80px]" />
 
       <StaffPicks />
 
       {/* Spacing before Community */}
-      <div className="h-[80px]" />
+      <div className="h-[48px] md:h-[80px]" />
 
       <Community />
 
       {/* Spacing before Newsletter */}
-      <div className="h-[72px]" />
+      <div className="h-[40px] md:h-[72px]" />
 
       <Newsletter />
 
       {/* Spacing before Footer */}
-      <div className="h-[72px]" />
+      <div className="h-[40px] md:h-[72px]" />
 
       <Footer />
     </main>

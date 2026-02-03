@@ -2,10 +2,10 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="max-w-[1440px] mx-auto px-12 py-10 border-t border-border">
-      <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-9">
+    <footer className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-10 border-t border-border">
+      <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-6 md:gap-9">
         {/* Brand */}
-        <div className="max-w-[260px]">
+        <div className="col-span-2 md:col-span-1 max-w-[260px]">
           <Link href="/" className="flex items-center gap-2.5">
             <svg className="h-[34px] w-[34px]" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <rect x="3" y="3" width="94" height="94" rx="14" ry="14" fill="none" stroke="#C4875A" strokeWidth="2"/>
@@ -81,7 +81,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom */}
-      <div className="mt-9 pt-5 border-t border-border flex justify-between text-xs text-cream-faint">
+      <div className="mt-6 md:mt-9 pt-5 border-t border-border flex flex-col md:flex-row justify-between gap-2 text-xs text-cream-faint">
         <span>&copy; 2026 The Backroom. All rights reserved.</span>
         <a href="/" className="transition-colors duration-300 hover:text-copper">thebackroom.fm</a>
       </div>

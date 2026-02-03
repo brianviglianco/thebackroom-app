@@ -15,7 +15,7 @@ export default function Hero() {
   const isGoal = actionFeed.action.includes('GOAL');
 
   return (
-    <div className="relative overflow-hidden border-b border-border min-h-[520px]">
+    <div className="relative overflow-hidden border-b border-border min-h-[400px] md:min-h-[520px]">
       {/* Background gradient */}
       <div 
         className="absolute inset-0"
@@ -24,8 +24,10 @@ export default function Hero() {
         }}
       />
 
-      {/* Canvas animation */}
-      <HeroCanvas onActionChange={handleActionChange} />
+      {/* Canvas animation - hidden on mobile for performance */}
+      <div className="hidden md:block">
+        <HeroCanvas onActionChange={handleActionChange} />
+      </div>
 
       {/* Overlays */}
       <div 
@@ -48,9 +50,9 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div 
-        className="relative z-[5] max-w-[580px] pt-[120px] pb-16 flex flex-col justify-center min-h-[520px]"
-        style={{ marginLeft: 'max(48px, calc((100vw - 1440px)/2 + 48px))' }}
+      <div
+        className="relative z-[5] max-w-[580px] pt-[100px] md:pt-[120px] pb-12 md:pb-16 flex flex-col justify-center min-h-[400px] md:min-h-[520px] px-4 md:px-8 lg:px-0"
+        style={{ marginLeft: 'max(16px, calc((100vw - 1440px)/2 + 48px))' }}
       >
         <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-copper mb-4 flex items-center gap-2.5">
           <span className="w-[18px] h-[1px] bg-copper" />
@@ -60,24 +62,24 @@ export default function Hero() {
           Find the <em className="italic font-light text-copper">right</em> tactic<br />
           for <em className="italic font-light text-copper">your save</em>
         </h1>
-        <p className="text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light mb-7">
-          Football Manager tactics backed by real saves, real data,<br />and real results.
+        <p className="text-[13px] md:text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light mb-6 md:mb-7">
+          Football Manager tactics backed by real saves, real data,<br className="hidden md:inline" />and real results.
         </p>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
           <button
             onClick={() => document.getElementById('explore-tactics')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-7 py-3 bg-copper border-none rounded-[7px] text-bg text-[14px] font-medium font-sans cursor-pointer transition-all duration-300 shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
+            className="px-5 md:px-7 py-2.5 md:py-3 bg-copper border-none rounded-[7px] text-bg text-[13px] md:text-[14px] font-medium font-sans cursor-pointer transition-all duration-300 shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
           >
             Explore Tactics
           </button>
-          <a href="#community" className="font-mono text-[12px] text-cream-muted transition-colors duration-300 hover:text-copper">
+          <a href="#community" className="font-mono text-[11px] md:text-[12px] text-cream-muted transition-colors duration-300 hover:text-copper">
             Browse managers →
           </a>
         </div>
       </div>
 
-      {/* Action Feed */}
-      <div className="absolute bottom-8 right-9 z-[6] flex flex-col items-end gap-2">
+      {/* Action Feed - hidden on mobile */}
+      <div className="hidden md:flex absolute bottom-8 right-9 z-[6] flex-col items-end gap-2">
         <div className="font-mono text-[8px] tracking-[0.15em] uppercase text-cream-faint mb-0.5">
           Live match sim
         </div>

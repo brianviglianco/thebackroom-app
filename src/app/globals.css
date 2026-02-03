@@ -130,15 +130,22 @@ a {
 
 /* Chips */
 .chip {
-  padding: 7px 16px;
+  padding: 6px 12px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--cream-secondary);
   cursor: pointer;
   transition: all 0.3s;
   white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .chip {
+    padding: 7px 16px;
+    font-size: 13px;
+  }
 }
 
 .chip:hover {
