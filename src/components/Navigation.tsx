@@ -7,7 +7,7 @@ export default function Navigation() {
   const [searchFocused, setSearchFocused] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] bg-[rgba(16,14,12,0.92)] backdrop-blur-[24px] border-b border-[rgba(42,36,28,0.5)]">
+    <nav className="fixed top-0 left-0 right-0 z-[100] bg-[rgba(26,23,20,0.92)] backdrop-blur-[24px] border-b border-[rgba(62,54,44,0.5)]">
       <div className="max-w-[1440px] mx-auto px-12 h-[54px] flex items-center gap-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">

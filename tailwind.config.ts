@@ -11,13 +11,13 @@ const config: Config = {
       colors: {
         // Backgrounds
         bg: {
-          DEFAULT: "#100E0C",
-          warm: "#171412",
+          DEFAULT: "#1A1714",
+          warm: "#211D19",
         },
         surface: {
-          DEFAULT: "#1E1A16",
-          hover: "#262119",
-          elevated: "#2A241C",
+          DEFAULT: "#2A2520",
+          hover: "#332D26",
+          elevated: "#3A332B",
         },
         // Accent - Copper
         copper: {
@@ -28,10 +28,10 @@ const config: Config = {
         },
         // Text - Cream
         cream: {
-          DEFAULT: "#F0E6D6",
-          secondary: "#B8A898",
-          muted: "#7A6E62",
-          faint: "#4A423A",
+          DEFAULT: "#F2E8DA",
+          secondary: "#CFC0B0",
+          muted: "#9A8E82",
+          faint: "#6A6058",
         },
         // Pitch
         pitch: {
@@ -40,15 +40,15 @@ const config: Config = {
         },
         // Semantic
         green: {
-          accent: "#5A8A50",
+          accent: "#6A9A60",
         },
         amber: {
-          accent: "#C4A85A",
+          accent: "#D0B466",
         },
         red: {
-          accent: "#C45A5A",
+          accent: "#D06666",
         },
-        border: "#2A241C",
+        border: "#3E362C",
       },
       fontFamily: {
         serif: ["Fraunces", "Georgia", "serif"],

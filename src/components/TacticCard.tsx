@@ -137,7 +137,7 @@ export default function TacticCard({
         {/* Face 1: Formation */}
         <div 
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-800 ${
-            isTrending ? 'bg-[#0A0908]' : 'bg-pitch-dark'
+            isTrending ? 'bg-[#141210]' : 'bg-pitch-dark'
           } ${currentFace === 0 ? 'opacity-100' : 'opacity-0'}`}
         >
           {/* Center line */}

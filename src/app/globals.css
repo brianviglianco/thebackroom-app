@@ -6,11 +6,11 @@
 
 :root {
   /* Backgrounds */
-  --bg: #100E0C;
-  --bg-warm: #171412;
-  --surface: #1E1A16;
-  --surface-hover: #262119;
-  --surface-elevated: #2A241C;
+  --bg: #1A1714;
+  --bg-warm: #211D19;
+  --surface: #2A2520;
+  --surface-hover: #332D26;
+  --surface-elevated: #3A332B;
   
   /* Copper Accent */
   --copper: #C4875A;
@@ -19,20 +19,20 @@
   --copper-glow: rgba(196,135,90,0.25);
   
   /* Cream Text */
-  --cream: #F0E6D6;
-  --cream-secondary: #B8A898;
-  --cream-muted: #7A6E62;
-  --cream-faint: #4A423A;
+  --cream: #F2E8DA;
+  --cream-secondary: #CFC0B0;
+  --cream-muted: #9A8E82;
+  --cream-faint: #6A6058;
   
   /* Pitch */
   --pitch-dark: #1A2418;
   --pitch-line: #2A3A28;
-  --green-accent: #5A8A50;
-  
+  --green-accent: #6A9A60;
+
   /* Semantic */
-  --amber-accent: #C4A85A;
-  --red-accent: #C45A5A;
-  --border: #2A241C;
+  --amber-accent: #D0B466;
+  --red-accent: #D06666;
+  --border: #3E362C;
   
   /* Fonts */
   --serif: 'Fraunces', Georgia, serif;

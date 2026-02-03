@@ -20,7 +20,7 @@ export default function Hero() {
       <div 
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(165deg, var(--bg) 0%, #12180f 30%, #162014 60%, #1c2c1a 100%)'
+          background: 'linear-gradient(165deg, var(--bg) 0%, #1C2218 30%, #20291D 60%, #263524 100%)'
         }}
       />
 
@@ -31,19 +31,19 @@ export default function Hero() {
       <div 
         className="absolute inset-0 z-[2]"
         style={{
-          background: 'linear-gradient(to right, var(--bg) 0%, rgba(16,14,12,0.97) 12%, rgba(16,14,12,0.85) 28%, rgba(16,14,12,0.55) 45%, rgba(16,14,12,0.2) 62%, rgba(16,14,12,0) 80%)'
+          background: 'linear-gradient(to right, var(--bg) 0%, rgba(26,23,20,0.97) 12%, rgba(26,23,20,0.85) 28%, rgba(26,23,20,0.55) 45%, rgba(26,23,20,0.2) 62%, rgba(26,23,20,0) 80%)'
         }}
       />
       <div 
         className="absolute top-0 left-0 right-0 h-[90px] z-[3]"
         style={{
-          background: 'linear-gradient(to bottom, rgba(16,14,12,0.9) 0%, rgba(16,14,12,0.4) 50%, rgba(16,14,12,0) 100%)'
+          background: 'linear-gradient(to bottom, rgba(26,23,20,0.9) 0%, rgba(26,23,20,0.4) 50%, rgba(26,23,20,0) 100%)'
         }}
       />
       <div 
         className="absolute bottom-0 left-0 right-0 h-[60px] z-[3]"
         style={{
-          background: 'linear-gradient(to top, var(--bg), rgba(16,14,12,0))'
+          background: 'linear-gradient(to top, var(--bg), rgba(26,23,20,0))'
         }}
       />
 
