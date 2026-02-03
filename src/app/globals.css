@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg text-cream font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Grain Overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 10000;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-copper/30 text-cream;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-copper/50 ring-offset-2 ring-offset-bg;
+  }
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+@layer components {
+  /* Eyebrow text (uppercase mono labels) */
+  .eyebrow {
+    @apply font-mono text-[10px] tracking-[0.15em] uppercase text-copper;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply inline-block w-[18px] h-px bg-copper mr-2.5 align-middle;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply font-serif text-section font-normal;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-surface border border-border rounded-card;
+    @apply transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)];
+  }
+
+  .card:hover {
+    @apply border-copper/30 shadow-copper-hover;
+    transform: translateY(-5px);
+  }
+
+  /* Button - Primary (Copper) */
+  .btn-primary {
+    @apply px-5 py-2 bg-copper text-bg font-sans text-sm font-medium rounded-button;
+    @apply transition-all duration-300;
+    @apply hover:bg-copper-bright hover:-translate-y-0.5;
+    @apply hover:shadow-[0_4px_12px_rgba(196,135,90,0.3)];
+  }
+
+  /* Button - Ghost */
+  .btn-ghost {
+    @apply px-4 py-2 bg-transparent text-cream-muted font-sans text-sm;
+    @apply transition-colors duration-300;
+    @apply hover:text-cream;
+  }
+
+  /* Tag base */
+  .tag {
+    @apply text-[9px] px-2 py-0.5 rounded-tag;
+  }
+
+  .tag-style {
+    @apply bg-green-accent/10 text-green-accent border border-green-accent/12;
+  }
+
+  .tag-level {
+    @apply bg-copper-dim text-copper border border-copper/12;
+  }
+
+  /* Formation badge */
+  .formation-badge {
+    @apply font-mono text-[10px] font-medium text-copper;
+    @apply bg-copper-dim border border-copper/15 rounded px-1.5 py-0.5;
+  }
+
+  /* Star rating */
+  .star-filled {
+    @apply text-copper;
+  }
+
+  .star-empty {
+    @apply text-cream-faint;
+  }
+
+  /* Win rate badge */
+  .wr-badge {
+    @apply font-mono text-[10px] font-medium px-1.5 py-0.5 rounded-tag;
+  }
+
+  .wr-good {
+    @apply text-green-accent bg-green-accent/10;
+  }
+
+  .wr-ok {
+    @apply text-amber-accent bg-amber-accent/10;
+  }
+
+  .wr-low {
+    @apply text-red-accent bg-red-accent/10;
+  }
+
+  /* Chip (filter pills) */
+  .chip {
+    @apply px-3.5 py-1.5 bg-bg border border-border rounded-button;
+    @apply text-sm text-cream-secondary cursor-pointer;
+    @apply transition-all duration-300;
+    @apply hover:border-copper/30 hover:text-cream;
+  }
+
+  .chip-selected {
+    @apply border-copper bg-copper-dim text-copper;
+  }
+
+  .chip-selected-green {
+    @apply border-green-accent bg-green-accent/10 text-green-accent;
+  }
+
+  /* Link with underline on hover */
+  .link-underline {
+    @apply text-copper font-mono text-[11px];
+    @apply border-b border-transparent transition-all duration-300;
+    @apply hover:border-copper;
+  }
+
+  /* Section spacing utilities */
+  .space-sm {
+    @apply h-[40px];
+  }
+
+  .space-md {
+    @apply h-[64px];
+  }
+
+  .space-lg {
+    @apply h-[88px];
+  }
+
+  /* Band warm (alternating section background) */
+  .band-warm {
+    @apply bg-bg-warm py-14;
+  }
+}
+
+/* ============================================
+   UTILITY STYLES
+   ============================================ */
+@layer utilities {
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Copper glow effect */
+  .glow-copper {
+    box-shadow: 0 0 16px rgba(196, 135, 90, 0.10);
+  }
+
+  /* Truncate multiple lines */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

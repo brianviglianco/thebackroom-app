@@ -1,0 +1,16 @@
+{
+  "name": "The Backroom",
+  "short_name": "Backroom",
+  "description": "FM Tactics Rated by the Community",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#100E0C",
+  "theme_color": "#100E0C",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
