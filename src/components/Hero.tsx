@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import HeroCanvas from './HeroCanvas';
 
 export default function Hero() {
   const [actionFeed, setActionFeed] = useState({ action: '', name: '' });
 
-  const handleActionChange = (action: string, name: string) => {
+  // FIXED: useCallback prevents creating a new function reference on every render
+  // This stops the HeroCanvas useEffect from resetting the animation
+  const handleActionChange = useCallback((action: string, name: string) => {
     setActionFeed({ action, name });
-  };
+  }, []);
 
   const isGoal = actionFeed.action.includes('GOAL');
 
@@ -45,7 +47,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Content - FIXED: increased max-width from 540px to 580px */}
+      {/* Content */}
       <div 
         className="relative z-[5] max-w-[580px] pt-[120px] pb-16 flex flex-col justify-center min-h-[520px]"
         style={{ marginLeft: 'max(48px, calc((100vw - 1440px)/2 + 48px))' }}
