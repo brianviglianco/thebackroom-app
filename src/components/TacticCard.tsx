@@ -194,7 +194,7 @@ export default function TacticCard({
           style={{ background: 'linear-gradient(135deg, var(--surface), rgba(196,135,90,0.03))' }}
         >
           <div className="font-serif italic text-[11px] text-cream-secondary leading-normal pl-2.5 border-l-2 border-copper line-clamp-4">
-            "{quote || 'A solid tactical approach that delivers consistent results across different team levels.'}"
+            &ldquo;{quote || 'A solid tactical approach that delivers consistent results across different team levels.'}&rdquo;
           </div>
         </div>
       </div>

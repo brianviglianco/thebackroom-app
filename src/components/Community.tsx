@@ -262,7 +262,7 @@ export default function Community() {
 
                 {/* Quote */}
                 <p className="font-serif italic text-sm text-cream-secondary leading-relaxed mb-2 line-clamp-2">
-                  "{review.quote}"
+                  &ldquo;{review.quote}&rdquo;
                 </p>
 
                 {/* Tactic link */}

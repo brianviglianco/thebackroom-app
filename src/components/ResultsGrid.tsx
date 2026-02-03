@@ -123,7 +123,7 @@ export default function ResultsGrid() {
           <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-copper rounded-[3px_0_0_3px]" />
           <div className="text-[28px] flex-shrink-0">🔍</div>
           <div className="flex-1 min-w-0">
-            <div className="text-[15px] text-cream font-serif font-medium mb-0.5">Don't know where to start?</div>
+            <div className="text-[15px] text-cream font-serif font-medium mb-0.5">Don&apos;t know where to start?</div>
             <div className="text-xs text-cream-muted leading-normal">
               Use the filters above to narrow it down, or browse all 847 tactics in the catalog.
             </div>

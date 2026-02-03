@@ -64,7 +64,7 @@ export default function StaffPicks() {
     <div className="bg-bg-warm py-14">
       <section className="max-w-[1440px] mx-auto px-12">
         {/* Section header */}
-        <div className="sec-eyebrow">⭐ Editor's Selection</div>
+        <div className="sec-eyebrow">⭐ Editor&apos;s Selection</div>
         <div className="flex items-baseline justify-between mb-5">
           <div className="flex items-baseline gap-3">
             <h2 className="font-serif text-section font-normal tracking-tight">Staff Picks</h2>
@@ -103,7 +103,7 @@ export default function StaffPicks() {
                 {featured.title}
               </h3>
               <p className="font-serif italic text-sm text-cream-secondary leading-relaxed mb-3 max-w-[520px] line-clamp-3">
-                "{featured.quote}"
+                &ldquo;{featured.quote}&rdquo;
               </p>
               <p className="text-[13px] text-cream-secondary leading-relaxed mb-3 pl-3 border-l-2 border-copper max-w-[520px] font-light">
                 {featured.editorNote}
@@ -201,7 +201,7 @@ export default function StaffPicks() {
                   {pick.title}
                 </h3>
                 <p className="font-serif italic text-sm text-cream-secondary leading-relaxed mb-2.5 max-w-[640px] line-clamp-2">
-                  "{pick.quote}"
+                  &ldquo;{pick.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs text-cream-muted">
