@@ -23,203 +23,365 @@ function spline(wp: number[][], t: number): [number, number] {
   ];
 }
 
-// Tactical sequences
+// ─────────────────────────────────────────────────────────────
+// TACTICAL SEQUENCES
+// Coordinate system: X=0 left, X=100 right, Y=0 top (opponent goal), Y=100 bottom (own goal)
+// Goal is centered at x≈42-58, y=0
+// Each player/defender has 8 waypoints interpolated over the sequence duration
+// ─────────────────────────────────────────────────────────────
+
 const SEQUENCES = [
   {
+    // COUNTER-ATTACK: Win ball deep, quick vertical transition, LW finishes
     name: 'Counter-Attack',
     dur: 10000,
     goalAt: 0.88,
     actions: [
       [0, 'Ball won deep...'],
-      [0.08, '→ CB plays to CM'],
-      [0.18, '→ CM finds RCM'],
-      [0.30, '← Back to CM driving'],
-      [0.44, '→ Plays CF'],
-      [0.60, '⚡ CF releases LW!'],
-      [0.88, '⚽ GOAL! Far post!']
+      [0.10, '→ CB plays to CM'],
+      [0.22, '→ CM drives forward'],
+      [0.38, '→ Finds CF on the turn'],
+      [0.55, '⚡ CF threads it to LW!'],
+      [0.75, '← LW cuts inside...'],
+      [0.88, '⚽ GOAL! Buries it!']
     ],
     players: [
-      [[16,88],[18,82],[20,76],[22,70],[24,64],[26,60],[28,56],[30,54]],
-      [[38,92],[40,86],[42,80],[44,76],[46,72],[48,68],[50,66],[52,64]],
-      [[62,92],[62,86],[62,80],[62,76],[62,72],[62,68],[62,66],[62,64]],
-      [[84,88],[82,82],[80,76],[78,70],[76,64],[74,60],[72,56],[70,54]],
-      [[30,72],[32,66],[34,58],[36,48],[34,38],[32,30],[32,26],[34,24]],
-      [[50,72],[50,68],[50,56],[48,44],[46,38],[44,34],[42,30],[40,28]],
-      [[70,72],[68,66],[66,60],[64,52],[62,44],[60,38],[58,34],[56,32]],
-      [[15,55],[15,50],[17,42],[21,34],[27,26],[33,22],[38,19],[40,18]],
-      [[50,48],[48,44],[46,38],[44,32],[42,28],[42,24],[44,21],[46,19]],
-      [[85,55],[82,50],[78,42],[74,34],[70,28],[66,24],[62,21],[60,19]]
+      // P0 LCB — holds deep
+      [[16,88],[18,84],[20,80],[22,76],[24,72],[26,68],[28,66],[30,64]],
+      // P1 LB — pushes up slowly
+      [[38,90],[40,86],[42,80],[44,74],[46,68],[48,64],[50,62],[52,60]],
+      // P2 CB — has ball initially, plays it forward
+      [[62,90],[62,86],[62,80],[62,76],[62,72],[62,68],[62,66],[62,64]],
+      // P3 RCB — holds deep
+      [[84,88],[82,84],[80,80],[78,76],[76,72],[74,68],[72,66],[70,64]],
+      // P4 LCM — supporting run
+      [[30,70],[32,64],[34,56],[36,48],[36,42],[36,38],[36,36],[38,34]],
+      // P5 CM — receives from CB, drives, passes to CF
+      [[50,72],[50,66],[50,56],[48,46],[46,38],[44,34],[44,32],[44,30]],
+      // P6 RCM — supporting run
+      [[70,70],[68,64],[66,56],[64,48],[62,42],[60,38],[58,36],[56,34]],
+      // P7 LW — holds width, sprints when through ball comes
+      [[15,58],[15,54],[17,48],[20,42],[26,36],[34,28],[40,20],[44,14]],
+      // P8 CF — receives, holds, plays through ball
+      [[50,50],[48,46],[46,40],[44,36],[42,32],[42,30],[44,28],[46,26]],
+      // P9 RW — decoy run stretching right
+      [[85,58],[84,52],[82,46],[80,40],[78,36],[76,32],[74,30],[72,28]]
     ],
     ball: [
       { t: 0, c: 2 },
-      { t: 0.08, c: 5 },
-      { t: 0.18, c: 6 },
-      { t: 0.30, c: 5 },
-      { t: 0.44, c: 8 },
-      { t: 0.60, c: 7 },
-      { t: 0.88, shot: [57, -3] }
+      { t: 0.10, c: 5 },
+      { t: 0.38, c: 8 },
+      { t: 0.55, c: 7 },
+      { t: 0.88, shot: [50, 1] }
     ],
-    defBase: [
-      [50,4],[74,32],[58,28],[42,28],[26,32],
-      [76,54],[60,50],[40,50],[24,54],[58,70],[42,70]
+    // Defenders: GK + 4 DEF + 4 MID + 2 FWD = 11 players
+    // They start in a compact mid-block and retreat as counter progresses
+    defenders: [
+      // D0 GK — stays on line, small adjustments
+      [[50,4],[50,4],[50,4],[50,4],[50,4],[50,5],[48,5],[46,5]],
+      // D1 RCB — holds line, shifts left as LW attacks
+      [[72,24],[72,24],[70,24],[68,24],[64,24],[58,22],[52,20],[48,18]],
+      // D2 CB — anchors, drops slightly
+      [[58,22],[58,22],[56,22],[54,22],[52,22],[50,20],[48,18],[46,16]],
+      // D3 LCB — tracks CF
+      [[42,22],[42,22],[42,22],[42,22],[42,22],[42,20],[42,18],[42,16]],
+      // D4 LB — holds wide left
+      [[26,24],[26,24],[26,24],[28,24],[28,24],[30,22],[32,20],[34,18]],
+      // D5 RCM — drops back as midfield is bypassed
+      [[72,38],[72,38],[70,36],[68,34],[64,32],[60,30],[56,28],[52,26]],
+      // D6 CM — tries to track CM runner
+      [[56,36],[56,36],[54,34],[52,32],[50,30],[48,28],[46,26],[44,24]],
+      // D7 LCM — covers center
+      [[42,36],[42,36],[42,34],[42,32],[42,30],[42,28],[42,26],[42,24]],
+      // D8 LM — stays wide, doesn't get involved
+      [[26,38],[26,38],[26,36],[26,34],[28,32],[30,30],[32,28],[34,26]],
+      // D9 RF — high press initially, retreats
+      [[60,52],[60,50],[58,48],[56,46],[54,44],[52,42],[50,40],[48,38]],
+      // D10 LF — high press initially, retreats
+      [[40,52],[40,50],[40,48],[40,46],[40,44],[40,42],[40,40],[40,38]]
     ]
   },
   {
+    // TIKI-TAKA: Patient buildup, triangles, RW finds pocket, CF finishes
     name: 'Tiki-Taka',
     dur: 11000,
-    goalAt: 0.87,
+    goalAt: 0.88,
     actions: [
       [0, 'Patient buildup...'],
       [0.08, '→ CM to LCM'],
-      [0.18, '→ Triangle back to CM'],
-      [0.30, '← Switches to RCM'],
-      [0.44, '→ RCM finds RW'],
-      [0.62, '→ Cut back to CF'],
-      [0.87, '⚽ GOAL! Placed finish!']
+      [0.18, '← Back to CM'],
+      [0.32, '→ Switches to RCM'],
+      [0.48, '→ RCM plays RW in pocket'],
+      [0.66, '→ RW squares to CF'],
+      [0.88, '⚽ GOAL! Clinical finish!']
     ],
     players: [
+      // P0 LCB
       [[18,76],[20,72],[22,68],[24,64],[26,60],[28,56],[30,54],[32,52]],
-      [[38,82],[40,78],[42,74],[44,70],[46,66],[48,64],[50,62],[52,60]],
-      [[62,82],[62,78],[62,74],[62,70],[62,66],[62,64],[62,62],[62,60]],
-      [[82,76],[80,72],[78,68],[76,64],[74,60],[72,56],[70,54],[68,52]],
-      [[34,60],[36,56],[38,50],[40,46],[42,40],[44,36],[46,32],[48,28]],
-      [[50,58],[50,54],[50,48],[50,44],[48,38],[46,34],[44,30],[42,26]],
-      [[66,60],[66,56],[66,50],[64,44],[62,38],[60,32],[58,28],[56,26]],
-      [[15,44],[18,40],[22,34],[26,28],[30,22],[34,18],[38,16],[40,15]],
-      [[50,40],[48,38],[46,36],[44,32],[44,26],[46,22],[48,19],[48,17]],
-      [[85,44],[82,40],[78,34],[74,28],[70,22],[66,18],[64,16],[62,15]]
+      // P1 LB
+      [[38,80],[40,76],[42,72],[44,68],[46,64],[48,60],[50,58],[52,56]],
+      // P2 CB
+      [[62,80],[62,76],[62,72],[62,68],[62,64],[62,60],[62,58],[62,56]],
+      // P3 RB — overlaps late
+      [[82,76],[80,72],[78,66],[76,60],[74,54],[72,46],[70,40],[68,36]],
+      // P4 LCM — circulates
+      [[34,62],[36,58],[38,52],[40,48],[42,44],[44,40],[46,38],[48,36]],
+      // P5 CM — orchestrator
+      [[50,60],[50,56],[50,50],[50,46],[48,42],[46,38],[44,36],[42,34]],
+      // P6 RCM — receives switch
+      [[66,62],[66,58],[66,52],[64,46],[62,40],[60,36],[58,34],[56,32]],
+      // P7 LW — stretches wide
+      [[15,48],[16,44],[18,40],[22,36],[26,32],[30,28],[34,26],[38,24]],
+      // P8 CF — lurks, then finishes
+      [[50,44],[48,42],[46,40],[44,38],[44,34],[46,30],[48,26],[48,20]],
+      // P9 RW — drops into pocket, squares to CF
+      [[85,48],[82,44],[78,40],[74,36],[72,32],[70,28],[66,24],[62,20]]
     ],
     ball: [
       { t: 0, c: 5 },
       { t: 0.08, c: 4 },
       { t: 0.18, c: 5 },
-      { t: 0.30, c: 6 },
-      { t: 0.44, c: 9 },
-      { t: 0.62, c: 8 },
-      { t: 0.87, shot: [43, -3] }
+      { t: 0.32, c: 6 },
+      { t: 0.48, c: 9 },
+      { t: 0.66, c: 8 },
+      { t: 0.88, shot: [50, 1] }
     ],
-    defBase: [
-      [50,4],[72,22],[56,19],[44,19],[28,22],
-      [72,38],[56,34],[44,34],[28,38],[56,52],[44,52]
+    // Defenders: compact low block, shift side to side following ball
+    defenders: [
+      // D0 GK
+      [[50,4],[50,4],[50,4],[50,4],[50,4],[50,4],[50,5],[50,5]],
+      // D1 RB — shifts with play
+      [[72,20],[72,20],[72,20],[70,20],[68,20],[66,20],[62,18],[58,16]],
+      // D2 RCB — holds
+      [[58,18],[58,18],[58,18],[56,18],[54,18],[52,18],[50,16],[48,14]],
+      // D3 LCB — holds
+      [[42,18],[42,18],[42,18],[42,18],[42,18],[42,18],[44,16],[44,14]],
+      // D4 LB — holds wide
+      [[28,20],[28,20],[28,20],[28,20],[30,20],[32,20],[34,18],[36,16]],
+      // D5 RM — tracks RW dropping in
+      [[74,34],[74,34],[72,34],[70,32],[68,30],[66,28],[62,26],[58,24]],
+      // D6 RCM — stays compact center
+      [[58,32],[58,32],[56,32],[54,30],[52,28],[50,26],[48,24],[46,22]],
+      // D7 LCM — compact center
+      [[42,32],[42,32],[42,32],[42,32],[42,30],[42,28],[42,26],[42,24]],
+      // D8 LM — holds shape
+      [[26,34],[26,34],[26,34],[28,34],[30,32],[32,30],[34,28],[36,26]],
+      // D9 RST — drops back to help
+      [[60,48],[60,48],[58,46],[56,44],[54,42],[52,40],[50,38],[48,36]],
+      // D10 LST — drops back
+      [[40,48],[40,48],[40,46],[40,44],[40,42],[40,40],[40,38],[40,36]]
     ]
   },
   {
+    // WING OVERLOAD: Build right, RB overlaps, cross to CF at far post
     name: 'Wing Overload',
     dur: 10500,
     goalAt: 0.89,
     actions: [
       [0, 'Building on the right...'],
-      [0.10, '→ Ball out to RW'],
-      [0.24, '⚡ RB overlapping!'],
-      [0.38, '→ Plays the overlap'],
-      [0.56, '← RB at the byline'],
-      [0.72, '✚ Cross to far post!'],
-      [0.89, '⚽ GOAL! Header!']
+      [0.10, '→ RCM finds RW'],
+      [0.26, '⚡ RB overlapping!'],
+      [0.40, '→ RW plays the overlap'],
+      [0.58, '← RB drives to byline'],
+      [0.74, '✚ Cross into the box!'],
+      [0.89, '⚽ GOAL! Headed in!']
     ],
     players: [
-      [[18,76],[20,72],[22,66],[24,62],[26,58],[28,54],[30,52],[32,50]],
-      [[38,82],[40,78],[42,74],[44,70],[46,66],[48,62],[50,60],[52,58]],
-      [[62,82],[62,78],[62,74],[64,70],[64,66],[64,62],[64,60],[64,58]],
-      [[82,78],[84,70],[86,56],[88,42],[90,28],[88,16],[84,10],[82,8]],
-      [[34,60],[36,54],[38,48],[40,42],[42,38],[44,34],[46,30],[48,28]],
-      [[50,58],[50,52],[50,46],[50,40],[48,36],[46,32],[44,30],[42,28]],
-      [[68,60],[68,54],[66,48],[64,42],[62,38],[60,34],[58,30],[56,28]],
-      [[14,44],[18,38],[24,32],[30,26],[36,20],[38,18],[40,15],[38,12]],
-      [[50,40],[48,36],[46,32],[44,28],[42,24],[40,20],[38,14],[36,11]],
-      [[84,44],[82,38],[80,30],[78,24],[76,20],[74,16],[72,14],[70,14]]
+      // P0 LCB — holds
+      [[18,74],[20,70],[22,66],[24,62],[26,58],[28,54],[30,52],[32,50]],
+      // P1 LB — tucks in
+      [[36,78],[38,74],[40,70],[42,66],[44,62],[46,58],[48,56],[50,54]],
+      // P2 CB — holds
+      [[58,78],[58,74],[58,70],[58,66],[58,62],[58,58],[58,56],[58,54]],
+      // P3 RB — THE OVERLAP
+      [[82,76],[84,68],[86,56],[88,42],[90,30],[88,18],[84,10],[82,8]],
+      // P4 LCM — supporting
+      [[34,60],[36,54],[38,48],[40,42],[42,38],[44,34],[46,32],[48,30]],
+      // P5 CM — holds shape
+      [[50,58],[50,52],[50,46],[50,42],[48,40],[46,38],[44,36],[42,34]],
+      // P6 RCM — starts with ball
+      [[68,58],[68,52],[66,46],[64,40],[62,36],[60,32],[58,30],[56,28]],
+      // P7 LW — pulls to far post for header
+      [[14,48],[16,44],[20,38],[24,34],[28,28],[32,24],[36,18],[38,12]],
+      // P8 CF — times far post run
+      [[50,44],[48,42],[46,40],[44,38],[42,34],[40,28],[38,20],[36,12]],
+      // P9 RW — receives, holds, lays off to overlap
+      [[84,46],[82,40],[80,34],[78,28],[78,26],[78,24],[78,22],[78,20]]
     ],
     ball: [
       { t: 0, c: 6 },
       { t: 0.10, c: 9 },
-      { t: 0.38, c: 3 },
-      { t: 0.72, c: 8 },
-      { t: 0.89, shot: [42, -3] }
+      { t: 0.40, c: 3 },
+      { t: 0.74, c: 8 },
+      { t: 0.89, shot: [44, 1] }
     ],
-    defBase: [
-      [50,4],[74,20],[58,16],[42,16],[26,20],
-      [76,38],[58,34],[42,34],[24,38],[58,54],[42,54]
+    // Defenders: shift right to cover overload, get stretched
+    defenders: [
+      // D0 GK — shifts right, then left for far post cross
+      [[50,4],[50,4],[52,4],[54,4],[56,5],[56,5],[52,5],[44,5]],
+      // D1 RB — pinned by overload, tracks overlap
+      [[74,20],[74,20],[76,18],[78,16],[80,14],[82,12],[84,10],[84,10]],
+      // D2 RCB — shifts right to cover
+      [[58,18],[58,18],[60,18],[62,18],[64,16],[66,14],[66,12],[64,12]],
+      // D3 LCB — stays central, then covers far post
+      [[42,18],[42,18],[42,18],[42,18],[42,18],[42,16],[40,14],[38,12]],
+      // D4 LB — holds far side
+      [[26,20],[26,20],[26,20],[26,20],[28,20],[30,18],[32,16],[34,14]],
+      // D5 RM — tracks RW, gets dragged right
+      [[74,32],[74,32],[76,30],[78,28],[80,26],[80,24],[80,22],[78,20]],
+      // D6 CM — shifts toward overload
+      [[56,30],[56,30],[58,30],[60,28],[62,26],[62,24],[60,22],[58,20]],
+      // D7 LCM — stays central
+      [[42,30],[42,30],[42,30],[42,28],[42,26],[42,24],[42,22],[42,20]],
+      // D8 LM — holds wide left
+      [[26,32],[26,32],[26,32],[26,30],[26,28],[28,26],[30,24],[32,22]],
+      // D9 RST — drops back
+      [[62,46],[62,44],[60,42],[58,40],[56,38],[54,36],[52,34],[50,32]],
+      // D10 LST — drops back
+      [[42,46],[42,44],[42,42],[42,40],[42,38],[42,36],[42,34],[42,32]]
     ]
   },
   {
+    // GEGENPRESSING: Lose ball, press immediately, win it back, fast finish
     name: 'Gegenpressing',
-    dur: 9500,
-    goalAt: 0.90,
+    dur: 10000,
+    goalAt: 0.82,
     actions: [
-      [0, 'Pressing high...'],
-      [0.12, '⚡ AM wins the ball!'],
-      [0.26, '→ Plays CF'],
-      [0.40, '→ CF lays back'],
-      [0.56, '→ Quick to LW'],
-      [0.72, '← AM driving at goal...'],
-      [0.90, '⚽ GOAL! Top corner!']
+      [0, 'Lost possession...'],
+      [0.08, '⚡ Pressing immediately!'],
+      [0.18, '⚡ AM wins it back!'],
+      [0.32, '→ Quick to CF'],
+      [0.48, '→ CF lays off to LW'],
+      [0.65, '→ LW drives inside...'],
+      [0.82, '⚽ GOAL! Curled in!']
     ],
     players: [
-      [[18,72],[20,68],[22,64],[24,60],[26,56],[28,52],[30,50],[32,48]],
-      [[38,78],[40,74],[42,70],[44,66],[46,62],[48,58],[50,56],[52,54]],
-      [[62,78],[62,74],[62,70],[62,66],[62,62],[62,58],[62,56],[62,54]],
-      [[82,72],[80,68],[78,64],[76,60],[74,56],[72,52],[70,50],[68,48]],
-      [[36,56],[38,50],[40,44],[42,38],[44,34],[46,30],[48,28],[48,26]],
-      [[64,56],[64,50],[62,44],[60,38],[58,34],[56,30],[54,28],[52,26]],
-      [[18,38],[20,34],[24,28],[28,22],[32,18],[36,14],[40,10],[42,8]],
-      [[50,42],[50,38],[48,34],[46,28],[44,24],[44,22],[44,22],[44,22]],
-      [[82,38],[78,32],[74,26],[70,20],[66,16],[62,12],[58,10],[56,8]],
-      [[50,34],[48,30],[46,24],[44,20],[42,16],[40,14],[40,13],[42,12]]
+      // P0 LCB
+      [[18,66],[18,64],[20,60],[22,56],[24,52],[26,48],[28,46],[30,44]],
+      // P1 LB
+      [[36,70],[36,68],[38,64],[40,60],[42,56],[44,52],[46,50],[48,48]],
+      // P2 CB
+      [[60,70],[60,68],[60,64],[60,60],[60,56],[60,52],[60,50],[60,48]],
+      // P3 RCB
+      [[82,66],[82,64],[80,60],[78,56],[76,52],[74,48],[72,46],[70,44]],
+      // P4 LCM
+      [[34,50],[36,46],[38,42],[40,38],[42,34],[44,30],[46,28],[48,26]],
+      // P5 RCM — lost the ball, presses
+      [[60,46],[58,42],[56,40],[54,38],[52,36],[50,34],[48,32],[46,30]],
+      // P6 LW — receives layoff, drives inside, SHOOTS
+      [[16,40],[16,38],[18,34],[22,30],[28,26],[34,22],[40,18],[44,14]],
+      // P7 AM — the presser, wins it back
+      [[50,48],[50,44],[48,40],[46,36],[44,32],[44,28],[44,24],[46,18]],
+      // P8 RW — supports
+      [[84,40],[82,36],[78,32],[74,28],[70,24],[66,22],[62,20],[58,18]],
+      // P9 CF — receives quick pass, lays off
+      [[50,36],[50,34],[48,30],[46,26],[44,22],[42,20],[42,18],[44,16]]
     ],
     ball: [
-      { t: 0, c: 7 },
-      { t: 0.12, c: 7 },
-      { t: 0.26, c: 9 },
-      { t: 0.40, c: 7 },
-      { t: 0.56, c: 6 },
-      { t: 0.72, c: 7 },
-      { t: 0.90, shot: [55, -3] }
+      { t: 0, c: 5 },
+      { t: 0.18, c: 7 },
+      { t: 0.32, c: 9 },
+      { t: 0.48, c: 6 },
+      { t: 0.82, shot: [48, 1] }
     ],
-    defBase: [
-      [50,4],[78,14],[58,12],[42,12],[22,14],
-      [74,32],[58,28],[42,28],[26,32],[60,50],[40,50]
+    // Defenders: had the ball briefly, now scramble as pressed
+    defenders: [
+      // D0 GK
+      [[50,4],[50,4],[50,4],[50,4],[50,4],[50,5],[50,5],[48,5]],
+      // D1 RB — holds shape
+      [[72,18],[72,18],[72,18],[72,18],[70,18],[68,18],[64,16],[60,14]],
+      // D2 RCB — shifts toward LW threat
+      [[56,16],[56,16],[56,16],[54,16],[52,16],[50,16],[48,14],[46,14]],
+      // D3 LCB — covers center
+      [[42,16],[42,16],[42,16],[42,16],[42,16],[42,16],[42,14],[42,14]],
+      // D4 LB — holds
+      [[26,18],[26,18],[26,18],[26,18],[28,18],[30,18],[32,16],[34,14]],
+      // D5 RM — had ball, loses it, retreats
+      [[68,30],[66,30],[62,28],[58,26],[56,24],[54,22],[52,20],[50,18]],
+      // D6 CM — tries to shield
+      [[54,28],[54,28],[52,26],[50,24],[48,22],[46,20],[44,18],[42,16]],
+      // D7 LCM — drops back
+      [[40,28],[40,28],[40,28],[40,26],[40,24],[40,22],[40,20],[40,18]],
+      // D8 LM — tucks in
+      [[26,30],[26,30],[26,30],[28,28],[30,26],[32,24],[34,22],[36,20]],
+      // D9 RST — was pressing, now caught upfield
+      [[64,44],[64,44],[62,42],[60,40],[58,38],[56,36],[54,34],[52,32]],
+      // D10 LST — caught upfield
+      [[40,44],[40,44],[40,42],[40,40],[40,38],[40,36],[40,34],[40,32]]
     ]
   },
   {
+    // ROUTE ONE: Goal kick, long ball to CF, flick on, CF2 through on goal
     name: 'Route One',
     dur: 9500,
     goalAt: 0.90,
     actions: [
       [0, 'Goal kick...'],
-      [0.10, '← Long ball forward!'],
-      [0.24, '→ CF wins the flick'],
-      [0.36, '→ CF2 runs onto it'],
-      [0.54, '⚡ Through on goal!'],
-      [0.74, '→ Rounds the keeper'],
-      [0.90, '⚽ GOAL! Slots it home!']
+      [0.12, '← Long ball forward!'],
+      [0.28, '→ CF wins the header'],
+      [0.40, '→ Flicked on to CF2'],
+      [0.56, '⚡ CF2 through on goal!'],
+      [0.76, '→ One on one...'],
+      [0.90, '⚽ GOAL! No mistake!']
     ],
     players: [
-      [[16,88],[18,82],[20,76],[22,70],[24,64],[26,60],[28,58],[30,56]],
-      [[38,94],[40,88],[42,82],[44,76],[46,72],[48,68],[50,66],[52,64]],
-      [[62,94],[62,88],[62,82],[62,76],[62,72],[62,68],[62,66],[62,64]],
-      [[84,88],[82,82],[80,76],[78,70],[76,64],[74,60],[72,58],[70,56]],
-      [[14,70],[18,62],[22,52],[26,44],[30,38],[34,34],[38,30],[40,28]],
-      [[38,68],[40,62],[42,54],[44,48],[46,42],[48,38],[50,34],[52,32]],
-      [[62,68],[62,62],[62,54],[62,48],[62,42],[62,38],[62,34],[62,32]],
-      [[86,70],[82,62],[78,52],[74,44],[70,38],[68,34],[66,30],[64,28]],
-      [[38,50],[38,44],[36,38],[34,32],[32,28],[32,24],[34,20],[36,18]],
-      [[62,50],[62,44],[62,36],[62,28],[60,18],[56,12],[52,7],[50,5]]
+      // P0 LCB
+      [[16,88],[18,82],[20,76],[22,72],[24,68],[26,64],[28,62],[30,60]],
+      // P1 CB — takes goal kick
+      [[40,92],[42,88],[44,82],[46,76],[48,72],[50,68],[52,66],[54,64]],
+      // P2 RCB
+      [[62,92],[62,88],[62,82],[62,76],[62,72],[62,68],[62,66],[62,64]],
+      // P3 RB
+      [[84,86],[82,80],[80,74],[78,68],[76,64],[74,60],[72,58],[70,56]],
+      // P4 LM
+      [[14,68],[16,62],[20,54],[24,48],[28,42],[32,38],[36,34],[40,32]],
+      // P5 CM — supports second ball
+      [[40,66],[42,60],[44,54],[46,48],[48,44],[50,40],[52,38],[54,36]],
+      // P6 RM
+      [[62,66],[62,60],[62,54],[62,48],[62,44],[62,40],[62,38],[62,36]],
+      // P7 RCM
+      [[86,68],[82,62],[78,54],[74,48],[70,42],[68,38],[66,34],[64,32]],
+      // P8 CF — target man, wins header, flicks on
+      [[44,52],[44,46],[42,40],[40,36],[40,34],[40,32],[42,30],[44,28]],
+      // P9 CF2 — runs onto flick, through on goal
+      [[56,54],[56,48],[54,42],[52,36],[50,28],[48,20],[48,12],[50,5]]
     ],
     ball: [
       { t: 0, c: 1 },
-      { t: 0.10, c: 8 },
-      { t: 0.36, c: 9 },
-      { t: 0.90, shot: [50, -3] }
+      { t: 0.12, c: 8 },
+      { t: 0.40, c: 9 },
+      { t: 0.90, shot: [50, 1] }
     ],
-    defBase: [
-      [50,5],[74,28],[58,26],[42,26],[26,28],
-      [74,46],[58,42],[42,42],[26,46],[58,62],[42,62]
+    // Defenders: high line initially, get caught by long ball
+    defenders: [
+      // D0 GK — comes off line for long ball, retreats, comes out for 1v1
+      [[50,4],[50,6],[50,8],[50,6],[50,5],[50,5],[50,6],[48,8]],
+      // D1 RCB — high, drops when long ball comes
+      [[70,28],[70,26],[68,24],[66,22],[64,20],[62,18],[60,16],[58,14]],
+      // D2 CB — challenges for header
+      [[56,26],[56,24],[54,22],[50,20],[48,18],[46,16],[46,14],[46,12]],
+      // D3 LCB — holds line
+      [[42,26],[42,24],[42,22],[42,20],[42,18],[42,16],[42,14],[42,12]],
+      // D4 LB — holds line
+      [[28,28],[28,26],[28,24],[28,22],[30,20],[32,18],[34,16],[36,14]],
+      // D5 RCM — drops back
+      [[70,40],[68,38],[66,36],[64,34],[62,32],[60,30],[58,28],[56,26]],
+      // D6 CM — drops
+      [[56,38],[54,36],[52,34],[50,32],[48,30],[46,28],[44,26],[44,24]],
+      // D7 LCM — drops
+      [[42,38],[42,36],[42,34],[42,32],[42,30],[42,28],[42,26],[42,24]],
+      // D8 LM — holds
+      [[26,40],[26,38],[26,36],[28,34],[30,32],[32,30],[34,28],[36,26]],
+      // D9 RST — retreats from high position
+      [[62,52],[60,50],[58,46],[56,42],[54,40],[52,38],[50,36],[48,34]],
+      // D10 LST — retreats
+      [[40,52],[40,50],[40,46],[40,42],[40,40],[40,38],[40,36],[40,34]]
     ]
   }
 ];
 
 const DEF_CLR = '#7B8A96';
 const DEF_GK = '#6A9A6A';
-const DEF_COUNT = 11;
 const TOP_M = 0.12;
 
 interface HeroCanvasProps {
@@ -265,15 +427,11 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
     let inPass = false;
     let prevCarrier = -1;
     let goalAlpha = 0;
+    let ballArc = 0;
 
-    // Defender state
-    const defCurrent: number[][] = [];
-    const defTargets: number[][] = [];
-    let prevMarkAssignment: number[] = [];
-
-    // History for velocity calculation
+    // History for trails and velocity
     const posHist: number[][][] = Array(10).fill(null).map(() => []);
-    const defPosHist: number[][][] = Array(DEF_COUNT).fill(null).map(() => []);
+    const defPosHist: number[][][] = Array(11).fill(null).map(() => []);
 
     function resize() {
       const rect = canvas!.getBoundingClientRect();
@@ -389,169 +547,6 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
       return [(h[h.length - 1][0] - h[h.length - 4][0]) / 3, (h[h.length - 1][1] - h[h.length - 4][1]) / 3];
     }
 
-    function initDefPositions(base: number[][]) {
-      for (let i = 0; i < DEF_COUNT; i++) {
-        defCurrent[i] = [base[i][0], base[i][1]];
-        defTargets[i] = [base[i][0], base[i][1]];
-      }
-      prevMarkAssignment = new Array(DEF_COUNT - 1).fill(-1);
-    }
-
-    function computeDefTargets(base: number[][], bx: number, by: number, atkPos: number[][]): number[][] {
-      const targets: number[][] = [];
-      const ballDepth = Math.max(0, Math.min(1, (80 - by) / 80));
-      const lateralShift = (bx - 50) * 0.03;
-      
-      const atkSorted = atkPos.map((p, i) => ({ x: p[0], y: p[1], idx: i })).sort((a, b) => a.y - b.y);
-      const deepest2 = atkSorted[1] ? atkSorted[1].y : 50;
-      const defLineY = Math.max(14, Math.min(deepest2 - 1.5, base[2][1]));
-
-      // GK
-      if (by < 22) {
-        const gkx = 50 + (bx - 50) * 0.22;
-        const gky = base[0][1] + Math.max(0, (22 - by) * 0.2);
-        targets.push([Math.max(35, Math.min(65, gkx)), Math.max(1, Math.min(14, gky))]);
-      } else {
-        const gkx = 50 + (bx - 50) * 0.12;
-        targets.push([Math.max(38, Math.min(62, gkx)), base[0][1]]);
-      }
-
-      // Outfield
-      const baseTargets: { x: number; y: number; role: number; defIdx: number }[] = [];
-      const ROLE_DEF = 1, ROLE_MID = 2, ROLE_FWD = 3;
-      const DEF_ROLES = [0, ROLE_DEF, ROLE_DEF, ROLE_DEF, ROLE_DEF, ROLE_MID, ROLE_MID, ROLE_MID, ROLE_MID, ROLE_FWD, ROLE_FWD];
-
-      for (let i = 1; i < DEF_COUNT; i++) {
-        let tx = base[i][0];
-        let ty = base[i][1];
-        const role = DEF_ROLES[i];
-        const latFactor = role === ROLE_DEF ? 1.0 : role === ROLE_MID ? 0.7 : 0.4;
-        tx += lateralShift * latFactor;
-
-        if (role === ROLE_DEF) {
-          const baseLineY = (base[1][1] + base[2][1] + base[3][1] + base[4][1]) / 4;
-          const yOffset = base[i][1] - baseLineY;
-          ty = defLineY + yOffset * 0.25;
-          ty = Math.max(6, ty);
-        }
-        if (role === ROLE_MID) {
-          const retreatAmount = Math.max(0, ballDepth - 0.35) * 6;
-          ty -= retreatAmount;
-          const midLimit = defLineY + 10;
-          ty = Math.max(midLimit, ty);
-        }
-        if (role === ROLE_FWD) {
-          const retreatAmount = Math.max(0, ballDepth - 0.4) * 6;
-          ty -= retreatAmount;
-          const fwdLimit = defLineY + 26;
-          ty = Math.max(fwdLimit, ty);
-        }
-
-        tx = Math.max(4, Math.min(96, tx));
-        ty = Math.max(5, Math.min(90, ty));
-        baseTargets.push({ x: tx, y: ty, role, defIdx: i });
-      }
-
-      // Marking assignment
-      const assigned = new Set<number>();
-      const markAssignment = new Array(baseTargets.length).fill(-1);
-      const markRanges: Record<number, number> = { [ROLE_DEF]: 36, [ROLE_MID]: 38, [ROLE_FWD]: 28 };
-
-      for (let di = 0; di < baseTargets.length; di++) {
-        const prevMark = prevMarkAssignment[di];
-        if (prevMark >= 0 && !assigned.has(prevMark)) {
-          const d = baseTargets[di];
-          const dx = atkPos[prevMark][0] - d.x;
-          const dy = atkPos[prevMark][1] - d.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const range = markRanges[d.role] || 26;
-          if (dist < range * 1.5) {
-            markAssignment[di] = prevMark;
-            assigned.add(prevMark);
-          }
-        }
-      }
-
-      const defOrder = baseTargets.map((d, i) => {
-        let minD = Infinity;
-        for (let j = 0; j < atkPos.length; j++) {
-          const dx = atkPos[j][0] - d.x;
-          const dy = atkPos[j][1] - d.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < minD) minD = dist;
-        }
-        return { i, minD };
-      }).sort((a, b) => a.minD - b.minD);
-
-      for (const { i: di } of defOrder) {
-        if (markAssignment[di] >= 0) continue;
-        const d = baseTargets[di];
-        let bestJ = -1, bestDist = Infinity;
-        for (let j = 0; j < atkPos.length; j++) {
-          if (assigned.has(j)) continue;
-          const dx = atkPos[j][0] - d.x;
-          const dy = atkPos[j][1] - d.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestJ = j;
-          }
-        }
-        const range = markRanges[d.role] || 26;
-        if (bestJ >= 0 && bestDist < range) {
-          markAssignment[di] = bestJ;
-          assigned.add(bestJ);
-        }
-      }
-
-      for (let di = 0; di < markAssignment.length; di++) {
-        prevMarkAssignment[di] = markAssignment[di];
-      }
-
-      // Apply marking
-      for (let di = 0; di < baseTargets.length; di++) {
-        const d = baseTargets[di];
-        let tx = d.x;
-        let ty = d.y;
-        const markIdx = markAssignment[di];
-        
-        if (markIdx >= 0) {
-          const ax = atkPos[markIdx][0];
-          const ay = atkPos[markIdx][1];
-          const dx = ax - tx;
-          const dy = ay - ty;
-          let markStr = d.role === 1 ? 0.35 : d.role === 2 ? 0.28 : 0.15;
-          
-          if (d.role === 1) {
-            const goalSideY = Math.max(6, ay - 3);
-            if (ty > goalSideY) {
-              tx += dx * markStr;
-              ty = goalSideY + (ty - goalSideY) * (1 - markStr * 0.3);
-            } else {
-              tx += dx * markStr;
-              ty += dy * markStr;
-            }
-          } else {
-            tx += dx * markStr;
-            ty += dy * markStr;
-          }
-        }
-
-        const distToBall = Math.sqrt((tx - bx) * (tx - bx) + (ty - by) * (ty - by));
-        if (distToBall < 15) {
-          const pressFactor = 0.15 * (1 - distToBall / 15);
-          tx += (bx - tx) * pressFactor;
-          ty += (by - ty) * pressFactor;
-        }
-
-        tx = Math.max(4, Math.min(96, tx));
-        ty = Math.max(5, Math.min(90, ty));
-        targets.push([tx, ty]);
-      }
-
-      return targets;
-    }
-
     function updateBall(seq: typeof SEQUENCES[0], t: number, positions: number[][]): number {
       const bp = seq.ball;
       let ci = 0;
@@ -565,12 +560,16 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
           passFromX = ballX;
           passFromY = ballY;
           passStartT = cur.t;
-          passDur = 0.022;
+          passDur = 0.04;
           inPass = true;
         }
         const p = Math.min((t - passStartT) / passDur, 1);
         ballX = passFromX + (cur.shot[0] - passFromX) * smoothstep(p);
         ballY = passFromY + (cur.shot[1] - passFromY) * smoothstep(p);
+        const sdx = cur.shot[0] - passFromX;
+        const sdy = cur.shot[1] - passFromY;
+        const shotDist = Math.sqrt(sdx * sdx + sdy * sdy);
+        ballArc = Math.sin(p * Math.PI) * shotDist * 0.08;
         return -1;
       }
 
@@ -582,7 +581,7 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
         const dx = positions[nc][0] - passFromX;
         const dy = positions[nc][1] - passFromY;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        passDur = 0.015 + (dist / 100) * 0.04;
+        passDur = 0.04 + (dist / 100) * 0.08;
         inPass = true;
       }
       prevCarrier = nc;
@@ -592,8 +591,14 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
         const p = elapsedPass / passDur;
         ballX = passFromX + (positions[nc][0] - passFromX) * smoothstep(p);
         ballY = passFromY + (positions[nc][1] - passFromY) * smoothstep(p);
+        const dx = positions[nc][0] - passFromX;
+        const dy = positions[nc][1] - passFromY;
+        const passDist = Math.sqrt(dx * dx + dy * dy);
+        const arcFactor = passDist > 50 ? 0.2 : passDist > 25 ? 0.12 : 0.05;
+        ballArc = Math.sin(p * Math.PI) * passDist * arcFactor;
       } else {
         inPass = false;
+        ballArc = Math.max(ballArc - 0.5, 0);
         const [vx, vy] = getVel(nc);
         const spd = Math.sqrt(vx * vx + vy * vy);
         const offset = Math.min(spd * 6, 2.2);
@@ -654,7 +659,7 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
     }
 
     function drawBall(x: number, y: number, flight: boolean) {
-      const dx = ppx(x), dy = ppy(y);
+      const dx = ppx(x), dy = ppy(y) - ballArc * 1.2;
       const glR = flight ? 16 : 12;
       const glA = flight ? 0.35 : 0.25;
       const g = ctx!.createRadialGradient(dx, dy, 0, dx, dy, glR);
@@ -671,30 +676,36 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
     }
 
     function drawTrails() {
+      ctx!.lineWidth = 1.5;
+      ctx!.lineCap = 'round';
       for (let i = 0; i < posHist.length; i++) {
         const h = posHist[i];
         if (h.length < 4) continue;
-        ctx!.strokeStyle = 'rgba(196,135,90,.025)';
-        ctx!.lineWidth = 2;
-        ctx!.lineCap = 'round';
-        ctx!.beginPath();
-        ctx!.moveTo(ppx(h[0][0]), ppy(h[0][1]));
-        for (let j = 1; j < h.length; j++) ctx!.lineTo(ppx(h[j][0]), ppy(h[j][1]));
-        ctx!.stroke();
+        for (let j = 1; j < h.length; j++) {
+          const alpha = 0.06 * (j / h.length);
+          ctx!.strokeStyle = `rgba(196,135,90,${alpha})`;
+          ctx!.beginPath();
+          ctx!.moveTo(ppx(h[j - 1][0]), ppy(h[j - 1][1]));
+          ctx!.lineTo(ppx(h[j][0]), ppy(h[j][1]));
+          ctx!.stroke();
+        }
       }
     }
 
     function drawDefTrails() {
+      ctx!.lineWidth = 1.5;
+      ctx!.lineCap = 'round';
       for (let i = 0; i < defPosHist.length; i++) {
         const h = defPosHist[i];
         if (h.length < 4) continue;
-        ctx!.strokeStyle = 'rgba(123,138,150,.018)';
-        ctx!.lineWidth = 1.5;
-        ctx!.lineCap = 'round';
-        ctx!.beginPath();
-        ctx!.moveTo(ppx(h[0][0]), ppy(h[0][1]));
-        for (let j = 1; j < h.length; j++) ctx!.lineTo(ppx(h[j][0]), ppy(h[j][1]));
-        ctx!.stroke();
+        for (let j = 1; j < h.length; j++) {
+          const alpha = 0.04 * (j / h.length);
+          ctx!.strokeStyle = `rgba(123,138,150,${alpha})`;
+          ctx!.beginPath();
+          ctx!.moveTo(ppx(h[j - 1][0]), ppy(h[j - 1][1]));
+          ctx!.lineTo(ppx(h[j][0]), ppy(h[j][1]));
+          ctx!.stroke();
+        }
       }
     }
 
@@ -722,6 +733,7 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
 
         drawPitch();
 
+        // Calculate attacker positions via splines
         const positions: number[][] = [];
         for (let i = 0; i < seq.players.length; i++) {
           const pos = spline(seq.players[i], t);
@@ -730,20 +742,31 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
           if (posHist[i].length > 30) posHist[i].shift();
         }
 
-        const carrier = updateBall(seq, t, positions);
-        const targets = computeDefTargets(seq.defBase, ballX, ballY, positions);
-        const speed = 1 - Math.pow(0.945, dt / 16.67);
-
-        for (let i = 0; i < DEF_COUNT; i++) {
-          defCurrent[i][0] += (targets[i][0] - defCurrent[i][0]) * speed;
-          defCurrent[i][1] += (targets[i][1] - defCurrent[i][1]) * speed;
-          defPosHist[i].push([defCurrent[i][0], defCurrent[i][1]]);
+        // Calculate defender positions via splines (same system as attackers!)
+        const defPositions: number[][] = [];
+        for (let i = 0; i < seq.defenders.length; i++) {
+          const pos = spline(seq.defenders[i], t);
+          defPositions.push(pos);
+          defPosHist[i].push([pos[0], pos[1]]);
           if (defPosHist[i].length > 25) defPosHist[i].shift();
         }
 
+        const carrier = updateBall(seq, t, positions);
+
+        // Receiver anticipation: nudge receiver toward ball during pass
+        if (inPass && carrier >= 0 && carrier < positions.length) {
+          const elP = (t - passStartT) / passDur;
+          if (elP > 0.5 && elP < 1) {
+            const pullStrength = (elP - 0.5) * 0.3;
+            positions[carrier][0] += (ballX - positions[carrier][0]) * pullStrength;
+            positions[carrier][1] += (ballY - positions[carrier][1]) * pullStrength;
+          }
+        }
+
+        // Draw
         drawDefTrails();
         drawTrails();
-        for (let i = 0; i < DEF_COUNT; i++) drawDefDot(defCurrent[i][0], defCurrent[i][1], i === 0);
+        for (let i = 0; i < defPositions.length; i++) drawDefDot(defPositions[i][0], defPositions[i][1], i === 0);
         for (let i = 0; i < positions.length; i++) drawDot(positions[i][0], positions[i][1], i === carrier);
         drawBall(ballX, ballY, inPass);
 
@@ -770,8 +793,9 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
             transFrom.push({ x: wp[wp.length - 1][0], y: wp[wp.length - 1][1] });
           }
           defTransFrom = [];
-          for (let i = 0; i < DEF_COUNT; i++) {
-            defTransFrom.push({ x: defCurrent[i][0], y: defCurrent[i][1] });
+          for (let i = 0; i < seq.defenders.length; i++) {
+            const wp = seq.defenders[i];
+            defTransFrom.push({ x: wp[wp.length - 1][0], y: wp[wp.length - 1][1] });
           }
           transBallFrom = [ballX, ballY];
 
@@ -782,8 +806,8 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
             transTo.push({ x: nextSeq.players[i][0][0], y: nextSeq.players[i][0][1] });
           }
           defTransTo = [];
-          for (let i = 0; i < DEF_COUNT; i++) {
-            defTransTo.push({ x: nextSeq.defBase[i][0], y: nextSeq.defBase[i][1] });
+          for (let i = 0; i < nextSeq.defenders.length; i++) {
+            defTransTo.push({ x: nextSeq.defenders[i][0][0], y: nextSeq.defenders[i][0][1] });
           }
           const nextFC = nextSeq.ball[0].c!;
           transBallTo = [nextSeq.players[nextFC][0][0], nextSeq.players[nextFC][0][1]];
@@ -806,7 +830,7 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
           state = 'transitioning';
           transStart = time;
           for (let i = 0; i < 10; i++) posHist[i] = [];
-          for (let i = 0; i < DEF_COUNT; i++) defPosHist[i] = [];
+          for (let i = 0; i < 11; i++) defPosHist[i] = [];
           lastActionIdx = -1;
           const nextIdx = (curSeq + 1) % SEQUENCES.length;
           setSequenceName(SEQUENCES[nextIdx].name);
@@ -869,7 +893,6 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
           ballX = seq.players[fc][0][0];
           ballY = seq.players[fc][0][1];
           prevCarrier = fc;
-          initDefPositions(seq.defBase);
           elapsed = 0;
           lastTime = 0;
           state = 'playing';
@@ -882,15 +905,14 @@ export default function HeroCanvas({ onActionChange }: HeroCanvasProps) {
     // Initialize
     resize();
     window.addEventListener('resize', resize);
-    
+
     const seq = SEQUENCES[0];
     const fc = seq.ball[0].c!;
     ballX = seq.players[fc][0][0];
     ballY = seq.players[fc][0][1];
     prevCarrier = fc;
-    initDefPositions(seq.defBase);
     setSequenceName(seq.name);
-    
+
     animationId = requestAnimationFrame(render);
 
     return () => {
