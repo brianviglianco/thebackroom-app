@@ -127,9 +127,9 @@ export default function Community() {
   return (
     <section id="community" className="max-w-[1440px] mx-auto px-12">
       {/* Section header */}
-      <div className="sec-eyebrow">👥 The Touchline</div>
+      <div className="sec-eyebrow">👥 From the Community</div>
       <div className="flex items-baseline justify-between mb-5">
-        <h2 className="font-serif text-section font-normal tracking-tight">Who&apos;s Behind the Tactics</h2>
+        <h2 className="font-serif text-section font-normal tracking-tight">The Touchline</h2>
       </div>
 
       {/* FIX-001: Two-column layout with proper alignment
