@@ -78,29 +78,14 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Live indicator - top right, hidden on mobile */}
-      <div className="hidden md:flex absolute top-[88px] right-9 z-[6] items-center gap-2">
-        <span className="inline-block w-[6px] h-[6px] rounded-full bg-red-500 animate-pulse" />
-        <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-cream-faint">
-          Live match sim
-        </span>
-      </div>
-
-      {/* Action Feed - bottom right, hidden on mobile */}
-      <div className="hidden md:flex absolute bottom-8 right-9 z-[6] flex-col items-end gap-2">
+      {/* Tactic name - bottom right, hidden on mobile */}
+      <div className="hidden md:flex absolute bottom-8 right-9 z-[6]">
         <div
-          className={`font-mono text-[11px] tracking-[0.18em] uppercase text-copper text-right transition-opacity duration-600 ${
-            actionFeed.name ? 'opacity-85' : 'opacity-0'
+          className={`font-mono text-[14px] tracking-[0.2em] uppercase text-copper text-right transition-opacity duration-700 ${
+            actionFeed.name ? 'opacity-80' : 'opacity-0'
           }`}
         >
           {actionFeed.name}
-        </div>
-        <div
-          className={`font-mono text-[13px] text-cream-secondary text-right whitespace-nowrap min-h-[20px] transition-opacity duration-500 ${
-            actionFeed.action ? 'opacity-100' : 'opacity-0'
-          } ${isGoal ? 'text-copper font-medium text-[15px] [text-shadow:0_0_20px_rgba(196,135,90,0.4)]' : ''}`}
-        >
-          {actionFeed.action}
         </div>
       </div>
     </div>
