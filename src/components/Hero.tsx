@@ -78,12 +78,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Action Feed - hidden on mobile */}
-      <div className="hidden md:flex absolute top-[88px] right-9 z-[6] flex-col items-end gap-2">
-        <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-cream-faint mb-0.5 flex items-center gap-2">
-          <span className="inline-block w-[6px] h-[6px] rounded-full bg-red-500 animate-pulse" />
+      {/* Live indicator - top right, hidden on mobile */}
+      <div className="hidden md:flex absolute top-[88px] right-9 z-[6] items-center gap-2">
+        <span className="inline-block w-[6px] h-[6px] rounded-full bg-red-500 animate-pulse" />
+        <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-cream-faint">
           Live match sim
-        </div>
+        </span>
+      </div>
+
+      {/* Action Feed - bottom right, hidden on mobile */}
+      <div className="hidden md:flex absolute bottom-8 right-9 z-[6] flex-col items-end gap-2">
         <div
           className={`font-mono text-[11px] tracking-[0.18em] uppercase text-copper text-right transition-opacity duration-600 ${
             actionFeed.name ? 'opacity-85' : 'opacity-0'
