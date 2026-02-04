@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Navigation, Hero, FilterCard, ResultsGrid, StaffPicks, Community, Newsletter, Footer } from '@/components';
+import { Navigation, Hero, FilterCard, ResultsGrid, ReviewsCarousel, TheDugout, NewsletterCompact, Footer } from '@/components';
 
 export default function Home() {
   const [resultsExpanded, setResultsExpanded] = useState(false);
@@ -10,23 +10,23 @@ export default function Home() {
     <main className="min-h-screen bg-bg">
       <Navigation />
       <Hero />
-      <FilterCard />
+      <FilterCard onSearch={() => setResultsExpanded(true)} />
       <ResultsGrid expanded={resultsExpanded} onExpand={() => setResultsExpanded(true)} />
 
-      {/* Spacing before Staff Picks */}
-      <div className="h-[48px] md:h-[80px]" />
+      {/* Spacing before Reviews */}
+      <div className="h-[48px] md:h-[72px]" />
 
-      <StaffPicks />
+      <ReviewsCarousel />
 
-      {/* Spacing before Community */}
-      <div className="h-[48px] md:h-[80px]" />
+      {/* Spacing before Creators */}
+      <div className="h-[48px] md:h-[72px]" />
 
-      <Community />
+      <TheDugout />
 
       {/* Spacing before Newsletter */}
-      <div className="h-[40px] md:h-[72px]" />
+      <div className="h-[48px] md:h-[72px]" />
 
-      <Newsletter />
+      <NewsletterCompact />
 
       {/* Spacing before Footer */}
       <div className="h-[40px] md:h-[72px]" />

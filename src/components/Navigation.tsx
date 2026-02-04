@@ -68,7 +68,7 @@ export default function Navigation() {
             </Link>
           </li>
           <li><Link href="/ranking" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Ranking</Link></li>
-          <li><Link href="/managers" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Managers</Link></li>
+          <li><Link href="/creators" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Creators</Link></li>
           <li><Link href="/about" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">About</Link></li>
         </ul>
 
@@ -134,7 +134,7 @@ export default function Navigation() {
           <div className="flex flex-col py-2">
             <Link href="/" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream text-[15px] border-b border-border">Tactics</Link>
             <Link href="/ranking" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">Ranking</Link>
-            <Link href="/managers" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">Managers</Link>
+            <Link href="/creators" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">Creators</Link>
             <Link href="/about" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">About</Link>
             <Link href="/submit" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-copper text-[15px] border-b border-border">+ Submit Tactic</Link>
           </div>

@@ -7,4 +7,7 @@ export { default as ResultsGrid } from './ResultsGrid';
 export { default as StaffPicks } from './StaffPicks';
 export { default as Community } from './Community';
 export { default as Newsletter } from './Newsletter';
+export { default as NewsletterCompact } from './NewsletterCompact';
+export { default as ReviewsCarousel } from './ReviewsCarousel';
+export { default as TheDugout } from './TheDugout';
 export { default as Footer } from './Footer';

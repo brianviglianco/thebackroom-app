@@ -61,7 +61,7 @@ export default function Footer() {
         <div>
           <h4 className="font-mono text-[10px] tracking-[0.12em] uppercase text-cream-muted mb-3.5">Community</h4>
           <nav className="flex flex-col">
-            <Link href="/managers" className="text-cream-secondary text-[13px] py-0.5 transition-colors duration-300 hover:text-copper">Managers</Link>
+            <Link href="/creators" className="text-cream-secondary text-[13px] py-0.5 transition-colors duration-300 hover:text-copper">Creators</Link>
             <Link href="/discord" className="text-cream-secondary text-[13px] py-0.5 transition-colors duration-300 hover:text-copper">Discord</Link>
             <Link href="/submit" className="text-cream-secondary text-[13px] py-0.5 transition-colors duration-300 hover:text-copper">Submit Tactic</Link>
           </nav>
