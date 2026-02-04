@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Navigation, Hero, FilterCard, ResultsGrid, ReviewsCarousel, TheDugout, SubmitCTA, Footer } from '@/components';
+import { Navigation, Hero, FilterCard, ResultsGrid, ReviewsCarousel, TheDugout, Footer } from '@/components';
 
 export default function Home() {
   const [resultsExpanded, setResultsExpanded] = useState(false);
@@ -22,11 +22,6 @@ export default function Home() {
       <div className="h-[48px] md:h-[72px]" />
 
       <TheDugout />
-
-      {/* Spacing before Submit CTA */}
-      <div className="h-[48px] md:h-[72px]" />
-
-      <SubmitCTA />
 
       {/* Spacing before Footer */}
       <div className="h-[40px] md:h-[72px]" />

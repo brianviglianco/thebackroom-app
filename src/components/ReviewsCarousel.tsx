@@ -159,7 +159,7 @@ export default function ReviewsCarousel() {
   // Auto-rotate: only re-runs when isPaused changes (nextPage is stable)
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextPage, 5000);
+    const interval = setInterval(nextPage, 10000);
     return () => clearInterval(interval);
   }, [isPaused, nextPage]);
 
