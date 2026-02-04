@@ -121,59 +121,62 @@ function ReviewCard({ review }: { review: typeof REVIEWS[0] }) {
   );
 }
 
+// Get review at index with circular wrapping
+function getReview(index: number) {
+  return REVIEWS[((index % REVIEWS.length) + REVIEWS.length) % REVIEWS.length];
+}
+
 export default function ReviewsCarousel() {
+  // currentIndex = index of the LEFT card (desktop shows currentIndex and currentIndex+1)
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayedIndex, setDisplayedIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [slideState, setSlideState] = useState<'idle' | 'sliding-out' | 'sliding-in'>('idle');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [slideOffset, setSlideOffset] = useState(0); // 0 = resting, negative = sliding left
   const currentIndexRef = useRef(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const rafRef = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const totalReviews = REVIEWS.length;
 
-  // goToIndex: animate to a specific review index
-  const goToIndex = useCallback((index: number) => {
-    if (index === currentIndexRef.current) return;
-    setSlideState(prev => {
-      if (prev !== 'idle') return prev;
-      timeoutRef.current = setTimeout(() => {
-        setDisplayedIndex(index);
-        setCurrentIndex(index);
-        currentIndexRef.current = index;
-        setSlideState('sliding-in');
-        rafRef.current = requestAnimationFrame(() => {
-          rafRef.current = requestAnimationFrame(() => {
-            setSlideState('idle');
-          });
-        });
-      }, 250);
-      return 'sliding-out';
-    });
-  }, []);
+  // Advance by 1: slide left then snap
+  const advance = useCallback(() => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    // Start CSS transition: slide left by (50% + gap)
+    setSlideOffset(-1);
+    // After transition ends, snap to new index without animation
+    setTimeout(() => {
+      const next = (currentIndexRef.current + 1) % totalReviews;
+      currentIndexRef.current = next;
+      setCurrentIndex(next);
+      setSlideOffset(0);
+      setIsAnimating(false);
+    }, 400);
+  }, [isAnimating, totalReviews]);
 
-  // nextReview: advance by 1
-  const nextReview = useCallback(() => {
-    const next = (currentIndexRef.current + 1) % totalReviews;
-    goToIndex(next);
-  }, [totalReviews, goToIndex]);
+  // Go to specific index (for dot navigation)
+  const goToIndex = useCallback((target: number) => {
+    if (target === currentIndexRef.current || isAnimating) return;
+    setIsAnimating(true);
+    setSlideOffset(-1);
+    setTimeout(() => {
+      currentIndexRef.current = target;
+      setCurrentIndex(target);
+      setSlideOffset(0);
+      setIsAnimating(false);
+    }, 400);
+  }, [isAnimating]);
 
-  // Auto-rotate every 10s
+  // Auto-rotate every 8s
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextReview, 10000);
+    const interval = setInterval(advance, 8000);
     return () => clearInterval(interval);
-  }, [isPaused, nextReview]);
+  }, [isPaused, advance]);
 
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  const visibleReview = REVIEWS[displayedIndex];
+  // We render 3 cards: current, current+1, current+2 (the +2 is the one sliding in from right)
+  const card0 = getReview(currentIndex);
+  const card1 = getReview(currentIndex + 1);
+  const card2 = getReview(currentIndex + 2);
 
   return (
     <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
@@ -187,36 +190,48 @@ export default function ReviewsCarousel() {
 
       {/* Carousel viewport */}
       <div
+        className="overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
+        ref={containerRef}
       >
-        {/* Single review card with slide animation */}
+        {/* Track: 3 cards side by side, each ~50% width minus gap on desktop */}
         <div
-          className="max-w-[720px]"
+          className="flex gap-4 md:gap-5"
           style={{
-            transition: slideState === 'sliding-in' ? 'none' : 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease',
-            transform: slideState === 'sliding-out' ? 'translateX(-40px)' : slideState === 'sliding-in' ? 'translateX(40px)' : 'translateX(0)',
-            opacity: slideState === 'idle' ? 1 : 0,
+            transition: slideOffset !== 0 ? 'transform 400ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+            transform: slideOffset === -1 ? 'translateX(calc(-50% - 10px))' : 'translateX(0)',
           }}
         >
-          <ReviewCard review={visibleReview} />
+          {/* Card 0 (current left) */}
+          <div className="w-full md:w-[calc(50%-10px)] flex-shrink-0">
+            <ReviewCard review={card0} />
+          </div>
+          {/* Card 1 (current right) */}
+          <div className="w-full md:w-[calc(50%-10px)] flex-shrink-0 hidden md:block">
+            <ReviewCard review={card1} />
+          </div>
+          {/* Card 2 (next, off-screen right, slides in) */}
+          <div className="w-full md:w-[calc(50%-10px)] flex-shrink-0 hidden md:block">
+            <ReviewCard review={card2} />
+          </div>
         </div>
+      </div>
 
-        {/* Dot navigation */}
-        <div className="flex items-center justify-start gap-2 mt-5">
-          {REVIEWS.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => goToIndex(idx)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 border-none cursor-pointer ${
-                idx === currentIndex
-                  ? 'bg-copper w-5'
-                  : 'bg-cream-faint opacity-40 hover:opacity-70'
-              }`}
-              aria-label={`Go to review ${idx + 1}`}
-            />
-          ))}
-        </div>
+      {/* Dot navigation — one dot per review */}
+      <div className="flex items-center gap-2 mt-5">
+        {REVIEWS.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => goToIndex(idx)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 border-none cursor-pointer ${
+              idx === currentIndex
+                ? 'bg-copper w-5'
+                : 'bg-cream-faint opacity-40 hover:opacity-70'
+            }`}
+            aria-label={`Go to review ${idx + 1}`}
+          />
+        ))}
       </div>
     </section>
   );

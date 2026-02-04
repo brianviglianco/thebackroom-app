@@ -74,7 +74,7 @@ export default function Hero() {
             Find your next tactic
           </button>
           <a href="#creators" className="font-mono text-[11px] md:text-[12px] text-cream-muted transition-colors duration-300 hover:text-copper">
-            See top creators →
+            SEE TOP CREATORS →
           </a>
         </div>
 

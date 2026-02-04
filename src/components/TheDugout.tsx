@@ -337,6 +337,7 @@ export default function TheDugout() {
 
         <div className="flex flex-col items-start md:items-end gap-2">
           <div className="flex items-center gap-1.5">
+            <span className="text-xs text-cream-muted mr-1 flex-shrink-0">Sort:</span>
             {SORT_OPTIONS.map((opt) => (
               <button
                 key={opt.key}

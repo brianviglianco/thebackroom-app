@@ -63,7 +63,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
             onClick={resetAll}
             className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper"
           >
-            Reset all
+            RESET ALL
           </span>
         </div>
 
