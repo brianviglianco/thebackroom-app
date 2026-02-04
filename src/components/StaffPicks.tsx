@@ -71,7 +71,7 @@ export default function StaffPicks() {
             <span className="font-mono text-[11px] text-cream-muted tracking-[0.05em]">January 2026</span>
           </div>
           <a href="#" className="text-copper font-mono text-[11px] border-b border-transparent transition-all duration-300 hover:border-copper">
-            Past editions →
+            PAST EDITIONS →
           </a>
         </div>
 

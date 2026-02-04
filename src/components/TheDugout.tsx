@@ -234,7 +234,7 @@ function PodiumCard({ creator, rank, sortBy, isChampion = false }: {
 
       {/* CTA */}
       <span className="font-mono text-[11px] text-copper border-b border-transparent group-hover:border-copper transition-all duration-300">
-        View profile →
+        VIEW PROFILE →
       </span>
     </a>
   );
@@ -299,7 +299,7 @@ function CreatorTableRow({ creator, rank, sortBy, isEven }: {
 
       {/* View CTA */}
       <span className="font-mono text-[10px] text-copper opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex-shrink-0 hidden md:block">
-        View →
+        VIEW →
       </span>
     </a>
   );
@@ -328,7 +328,7 @@ export default function TheDugout() {
       {/* ── Header ── */}
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 md:mb-8">
         <div>
-          <div className="sec-eyebrow">🏟️ From the Dugout</div>
+          <div className="sec-eyebrow">🏟️ From the Backroom</div>
           <h2 className="font-serif text-[22px] md:text-section font-normal tracking-tight">Top Creators</h2>
           <p className="text-[13px] text-cream-muted mt-1.5 max-w-[440px] leading-relaxed">
             Discover the most trusted tactic makers&mdash;ranked by real community results.
@@ -352,7 +352,7 @@ export default function TheDugout() {
             ))}
             <span className="hidden md:block w-[1px] h-4 bg-border mx-1" />
             <a href="/creators" className="text-copper font-mono text-[11px] border-b border-transparent transition-all duration-300 hover:border-copper">
-              All creators →
+              ALL CREATORS →
             </a>
           </div>
           <span className="font-mono text-[9px] text-cream-faint tracking-[0.04em]">

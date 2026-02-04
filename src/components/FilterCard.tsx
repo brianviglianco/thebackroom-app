@@ -14,11 +14,7 @@ const STYLES = ['Counter-Attack', 'Possession', 'High Press', 'Direct', 'Balance
 const LEVELS = ['Top Club', 'Mid-Table', 'Underdog', 'Lower League', 'Newly Promoted'];
 const WIN_RATES = ['50%+', '60%+', '70%+', '80%+'];
 
-interface FilterCardProps {
-  onSearch?: () => void;
-}
-
-export default function FilterCard({ onSearch }: FilterCardProps) {
+export default function FilterCard() {
   const [selectedFormation, setSelectedFormation] = useState('4-3-3');
   const [selectedStyles, setSelectedStyles] = useState<string[]>(['Counter-Attack']);
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['Underdog']);
@@ -27,7 +23,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
   const [selectedWinRate, setSelectedWinRate] = useState('60%+');
 
   const toggleStyle = (style: string) => {
-    setSelectedStyles(prev => 
+    setSelectedStyles(prev =>
       prev.includes(style) ? prev.filter(s => s !== style) : [...prev, style]
     );
   };
@@ -38,28 +34,38 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
     );
   };
 
+  const resetAll = () => {
+    setSelectedFormation('4-3-3');
+    setSelectedStyles([]);
+    setSelectedLevels([]);
+    setSelectedVersion('FM26');
+    setMinRating(1);
+    setSelectedWinRate('50%+');
+  };
+
   return (
     <div id="explore-tactics" className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-8 md:pt-10">
       <div className="bg-surface border border-border rounded-[14px] overflow-hidden relative">
         {/* Top accent line */}
-        <div 
+        <div
           className="absolute top-0 left-0 right-0 h-[1px] opacity-30"
           style={{ background: 'linear-gradient(90deg, transparent, var(--copper), transparent)' }}
         />
 
         {/* Header */}
-        <div className="px-4 md:px-8 py-4 md:py-6 pb-4 md:pb-5 flex flex-col md:flex-row md:items-center justify-between border-b border-border gap-2">
-          <div className="flex items-baseline gap-2.5">
-            <h2 className="font-serif text-[20px] md:text-[24px] font-normal">Explore tactics</h2>
-          </div>
-          <button className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper bg-transparent border-none self-start md:self-auto">
-            Reset all filters
-          </button>
+        <div className="px-4 md:px-8 py-4 md:py-5 flex items-center justify-between">
+          <h2 className="font-serif text-[20px] md:text-[24px] font-normal text-cream">Explore Tactics</h2>
+          <span
+            onClick={resetAll}
+            className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper"
+          >
+            Reset all
+          </span>
         </div>
 
         {/* Filter columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b border-border">
-          {/* Formation — enhanced labels */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-b border-border">
+          {/* Formation */}
           <div className="p-4 md:p-6 border-b md:border-b lg:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">1</span>
@@ -89,8 +95,8 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
                       <div
                         key={i}
                         className={`absolute w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                          selectedFormation === fm.name 
-                            ? 'bg-copper shadow-[0_0_5px_rgba(196,135,90,0.5)]' 
+                          selectedFormation === fm.name
+                            ? 'bg-copper shadow-[0_0_5px_rgba(196,135,90,0.5)]'
                             : 'bg-cream-faint'
                         }`}
                         style={{ left: `${pos[0]}%`, bottom: `${pos[1]}%` }}
@@ -124,7 +130,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
             </div>
           </div>
 
-          {/* Playing Style — enhanced label */}
+          {/* Playing Style */}
           <div className="p-4 md:p-6 border-b md:border-b lg:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">2</span>
@@ -144,7 +150,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
             </div>
           </div>
 
-          {/* Team Level — enhanced label */}
+          {/* Team Level */}
           <div className="p-4 md:p-6 border-b md:border-b-0 lg:border-r border-border">
             <div className="font-mono text-[10px] tracking-[0.14em] uppercase text-cream-muted mb-1 flex items-center gap-1.5">
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">3</span>
@@ -170,9 +176,9 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
               <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-copper-dim text-copper text-[8px] font-medium">4</span>
               FM Version & Filters
             </div>
-            
+
             {/* Version select */}
-            <select 
+            <select
               value={selectedVersion}
               onChange={(e) => setSelectedVersion(e.target.value)}
               className="w-full appearance-none px-3 py-[7px] bg-bg border border-border rounded-md text-cream text-xs font-sans cursor-pointer mb-2 pr-7 transition-colors duration-300 focus:border-[rgba(196,135,90,0.3)]"
@@ -199,7 +205,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
                       onClick={() => setMinRating(star)}
                       className={`text-xl transition-colors duration-300 ${star <= minRating ? 'text-copper' : 'text-cream-faint'}`}
                     >
-                      ★
+                      &#9733;
                     </span>
                   ))}
                 </div>
@@ -207,7 +213,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
               </div>
             </div>
 
-            {/* Min win rate — enhanced with sample context */}
+            {/* Min win rate */}
             <div>
               <div className="text-[11px] text-cream-muted mb-1">Min. win rate <span className="text-cream-faint text-[9px]">(50+ match samples)</span></div>
               <div className="flex gap-1 mt-2">
@@ -216,8 +222,8 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
                     key={wr}
                     onClick={() => setSelectedWinRate(wr)}
                     className={`px-2.5 py-1 bg-bg border rounded font-mono text-[10px] text-cream-muted cursor-pointer transition-all duration-300 ${
-                      selectedWinRate === wr 
-                        ? 'border-green-accent bg-[rgba(90,138,80,0.1)] text-green-accent' 
+                      selectedWinRate === wr
+                        ? 'border-green-accent bg-[rgba(90,138,80,0.1)] text-green-accent'
                         : 'border-border'
                     }`}
                   >
@@ -230,28 +236,12 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         </div>
 
         {/* Bottom action bar */}
-        <div className="px-4 md:px-7 py-4 md:py-5 pb-5 md:pb-6 flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+        <div className="px-4 md:px-7 py-4 md:py-5 pb-5 md:pb-6 flex items-center justify-end">
           <button
-            onClick={onSearch}
-            className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5 self-start"
+            className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5"
           >
-            Show <span className="font-mono font-medium bg-[rgba(16,14,12,0.25)] px-2 py-0.5 rounded text-xs">23</span> tactics →
+            SHOW <span className="font-mono font-medium bg-[rgba(16,14,12,0.25)] px-2 py-0.5 rounded text-xs">23</span> TACTICS &rarr;
           </button>
-
-          <div className="hidden md:block w-[1px] h-6 bg-border flex-shrink-0" />
-
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-            <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-cream-muted flex-shrink-0">Quick:</span>
-            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-              🏰 Best for Lower League FM26
-            </span>
-            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-              ⚡ Top Counter-Attack Underdogs
-            </span>
-            <span className="px-4 py-1.5 bg-bg border border-border rounded-full text-xs text-cream-secondary cursor-pointer transition-all duration-300 flex items-center gap-1.5 whitespace-nowrap hover:border-[rgba(196,135,90,0.3)] hover:text-cream hover:bg-surface-hover">
-              🎯 Highest Rated Possession
-            </span>
-          </div>
         </div>
       </div>
     </div>

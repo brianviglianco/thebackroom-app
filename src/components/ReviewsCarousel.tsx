@@ -48,6 +48,15 @@ const REVIEWS = [
     wins: 28, draws: 6, losses: 4, fmVersion: "FM26 v26.3",
     time: "3 days ago", verified: false,
   },
+  {
+    initials: "AS", author: "ArmchairSacchi",
+    ratingResults: 3, ratingExperience: 3, ratingEase: 2,
+    quote: "Decent results but the setup instructions were confusing. Took me three attempts to get the roles right. Once it clicked, won more than I lost — but not plug and play.",
+    tactic: "Bielsa's Vertical Hell",
+    club: "Leeds United", league: "Championship",
+    wins: 18, draws: 9, losses: 11, fmVersion: "FM26 v26.2",
+    time: "4 days ago", verified: true,
+  },
 ];
 
 function MiniStars({ rating, label }: { rating: number; label: string }) {
@@ -182,9 +191,9 @@ export default function ReviewsCarousel() {
     <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
       <div className="sec-eyebrow">💬 From the Touchline</div>
       <div className="flex items-baseline justify-between mb-5">
-        <h2 className="font-serif text-[22px] md:text-section font-normal tracking-tight">What managers are saying</h2>
+        <h2 className="font-serif text-[22px] md:text-section font-normal tracking-tight">What Managers are saying</h2>
         <a href="#" className="text-copper font-mono text-[11px] border-b border-transparent transition-all duration-300 hover:border-copper">
-          All reviews →
+          ALL REVIEWS →
         </a>
       </div>
 

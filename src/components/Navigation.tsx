@@ -60,11 +60,11 @@ export default function Navigation() {
         </div>
 
         {/* Nav Links - hidden on mobile */}
-        <ul className="hidden lg:flex gap-6 list-none flex-1 justify-center">
+        <ul className="hidden lg:flex gap-5 list-none flex-1 justify-center">
+          <li><Link href="/how-it-works" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">How It Works</Link></li>
           <li>
-            <Link href="/" className="relative text-cream text-[14px] transition-colors duration-300 hover:text-cream pb-1">
+            <Link href="/" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">
               Tactics
-              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-copper rounded-full" />
             </Link>
           </li>
           <li><Link href="/ranking" className="text-cream-muted text-[14px] transition-colors duration-300 hover:text-cream">Ranking</Link></li>
@@ -132,6 +132,7 @@ export default function Navigation() {
           </div>
           {/* Nav links */}
           <div className="flex flex-col py-2">
+            <Link href="/how-it-works" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">How It Works</Link>
             <Link href="/" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream text-[15px] border-b border-border">Tactics</Link>
             <Link href="/ranking" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">Ranking</Link>
             <Link href="/creators" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-cream-muted text-[15px] border-b border-border">Creators</Link>

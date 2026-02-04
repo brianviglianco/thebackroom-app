@@ -34,13 +34,13 @@ export default function Newsletter() {
           <div className="flex-1 max-w-[520px]">
             <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-copper mb-2 flex items-center gap-2">
               <span className="w-[14px] h-[1px] bg-copper" />
-              Weekly Digest
+              📬 Newsletter
             </div>
             <h3 className="font-serif text-[20px] md:text-[22px] font-medium tracking-tight mb-2">
-              Get the best tactics before everyone else
+              The Matchday Brief
             </h3>
             <p className="text-[12px] md:text-[13px] text-cream-secondary leading-relaxed">
-              Every Friday: top-rated new tactics, trending formations, creator spotlights, and FM tips from the community. Free, no spam, unsubscribe anytime.
+              Top tactics, trending shapes, and creator spotlights&mdash;delivered Fridays. Free. No spam.
             </p>
           </div>
 
@@ -60,19 +60,19 @@ export default function Newsletter() {
                   type="submit"
                   className="px-6 py-3 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 whitespace-nowrap shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
                 >
-                  Subscribe
+                  SUBSCRIBE
                 </button>
               </form>
             ) : (
               <div className="flex items-center gap-2.5 py-3">
                 <span className="text-copper text-lg">&#10003;</span>
                 <span className="text-cream-secondary text-[14px]">
-                  You&apos;re in. First digest drops this Friday.
+                  You&apos;re in. See you on matchday.
                 </span>
               </div>
             )}
             <p className="text-[11px] text-cream-faint mt-2.5">
-              Join 2,400+ FM managers. Read by creators like Knap, WorkTheSpace, and Zealand.
+              Join 2,400+ FM managers.
             </p>
           </div>
         </div>
