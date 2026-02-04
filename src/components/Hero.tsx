@@ -71,10 +71,10 @@ export default function Hero() {
             onClick={() => document.getElementById('explore-tactics')?.scrollIntoView({ behavior: 'smooth' })}
             className="px-5 md:px-7 py-2.5 md:py-3 bg-copper border-none rounded-[7px] text-bg text-[13px] md:text-[14px] font-medium font-sans cursor-pointer transition-all duration-300 shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
           >
-            FIND YOUR NEXT TACTIC
+            Find your next tactic
           </button>
           <a href="#creators" className="font-mono text-[11px] md:text-[12px] text-cream-muted transition-colors duration-300 hover:text-copper">
-            SEE TOP CREATORS →
+            See top creators →
           </a>
         </div>
 

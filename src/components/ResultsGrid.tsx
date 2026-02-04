@@ -212,69 +212,98 @@ const TACTICS = [
   },
 ];
 
-export default function ResultsGrid() {
+interface ResultsGridProps {
+  expanded: boolean;
+  onExpand: () => void;
+}
+
+export default function ResultsGrid({ expanded, onExpand }: ResultsGridProps) {
   const [sortBy, setSortBy] = useState('rating');
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12 pt-6 md:pt-8">
-      {/* Results bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
-        <span className="text-sm text-cream-secondary">
-          Showing <strong className="text-cream font-medium">23 tactics</strong> matching your filters
-        </span>
-        <div className="flex gap-1 items-center overflow-x-auto">
-          <span className="text-xs text-cream-muted mr-1.5 flex-shrink-0">Sort:</span>
-          {['Top Rated', 'Win Rate', 'Downloads', 'Newest'].map((sort) => {
-            const sortKey = sort.toLowerCase().replace(' ', '-');
-            return (
-              <button
-                key={sort}
-                onClick={() => setSortBy(sortKey)}
-                className={`px-3 md:px-4 py-[7px] bg-transparent border rounded-md text-[12px] md:text-[13px] font-sans cursor-pointer transition-all duration-300 whitespace-nowrap ${
-                  sortBy === sortKey
-                    ? 'text-copper border-[rgba(196,135,90,0.25)] bg-copper-dim'
-                    : 'text-cream-muted border-transparent hover:text-cream hover:bg-surface'
-                }`}
-              >
-                {sort}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Tactics grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-        {TACTICS.map((tactic, index) => (
-          <TacticCard key={index} {...tactic} />
-        ))}
-
-        {/* Submit CTA inline card */}
+      {/* Collapsed state */}
+      {!expanded && (
         <div
-          className="col-span-full relative rounded-[10px] p-4 md:p-5 px-5 md:px-7 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-5 cursor-pointer transition-all duration-400 hover:-translate-y-0.5"
-          style={{
-            background: 'linear-gradient(135deg, rgba(196,135,90,0.06), rgba(196,135,90,0.02))',
-            border: '1px dashed rgba(196,135,90,0.25)'
-          }}
+          onClick={onExpand}
+          className="relative overflow-hidden cursor-pointer transition-all duration-400 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-5 rounded-[10px] border border-border p-4 md:p-5 px-5 md:px-7 hover:border-[rgba(196,135,90,0.2)] hover:shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
+          style={{ background: 'linear-gradient(135deg, var(--surface), rgba(196,135,90,0.04))' }}
         >
           <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-copper rounded-l-[10px]" />
-          <div className="text-2xl flex-shrink-0">📋</div>
+          <div className="text-[28px] flex-shrink-0">🔍</div>
           <div className="flex-1 min-w-0">
-            <div className="font-serif text-base font-medium mb-0.5">Got a tactic that works? Share it with the community.</div>
-            <div className="text-xs text-cream-muted leading-relaxed">Submit your FM tactic, get rated by real managers, and join the leaderboard.</div>
+            <div className="text-[15px] text-cream font-serif font-medium mb-0.5">Don&apos;t know where to start?</div>
+            <div className="text-xs text-cream-muted leading-relaxed">Use the filters above to narrow it down, or browse all 847 tactics in the catalog.</div>
           </div>
-          <button className="px-5 py-2 bg-copper text-bg font-sans text-xs font-medium border-none rounded-md cursor-pointer whitespace-nowrap transition-all duration-300 flex-shrink-0 hover:bg-copper-bright">
-            SUBMIT TACTIC →
+          <button className="px-5 py-2 bg-copper text-bg font-sans text-xs font-medium border-none rounded-md cursor-pointer whitespace-nowrap transition-all duration-300 flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5">
+            Browse all tactics →
           </button>
         </div>
-      </div>
+      )}
 
-      {/* Load more */}
-      <div className="text-center pt-2">
-        <button className="px-7 py-2 bg-surface border border-border rounded-md text-cream-secondary text-[13px] font-sans cursor-pointer transition-all duration-300 hover:border-copper hover:text-copper">
-          LOAD MORE TACTICS →
-        </button>
-      </div>
+      {/* Expanded state */}
+      {expanded && (
+        <>
+          {/* Results bar */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3">
+            <span className="text-sm text-cream-secondary">
+              Showing <strong className="text-cream font-medium">23 tactics</strong> matching your filters
+            </span>
+            <div className="flex gap-1 items-center overflow-x-auto">
+              <span className="text-xs text-cream-muted mr-1.5 flex-shrink-0">Sort:</span>
+              {['Top Rated', 'Win Rate', 'Downloads', 'Newest'].map((sort) => {
+                const sortKey = sort.toLowerCase().replace(' ', '-');
+                return (
+                  <button
+                    key={sort}
+                    onClick={() => setSortBy(sortKey)}
+                    className={`px-3 md:px-4 py-[7px] bg-transparent border rounded-md text-[12px] md:text-[13px] font-sans cursor-pointer transition-all duration-300 whitespace-nowrap ${
+                      sortBy === sortKey
+                        ? 'text-copper border-[rgba(196,135,90,0.25)] bg-copper-dim'
+                        : 'text-cream-muted border-transparent hover:text-cream hover:bg-surface'
+                    }`}
+                  >
+                    {sort}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Tactics grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            {TACTICS.map((tactic, index) => (
+              <TacticCard key={index} {...tactic} />
+            ))}
+
+            {/* Submit CTA inline card */}
+            <div
+              className="col-span-full relative rounded-[10px] p-4 md:p-5 px-5 md:px-7 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-5 cursor-pointer transition-all duration-400 hover:-translate-y-0.5"
+              style={{
+                background: 'linear-gradient(135deg, rgba(196,135,90,0.06), rgba(196,135,90,0.02))',
+                border: '1px dashed rgba(196,135,90,0.25)'
+              }}
+            >
+              <div className="absolute top-0 left-0 bottom-0 w-[3px] bg-copper rounded-l-[10px]" />
+              <div className="text-2xl flex-shrink-0">📋</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-serif text-base font-medium mb-0.5">Got a tactic that works? Share it with the community.</div>
+                <div className="text-xs text-cream-muted leading-relaxed">Submit your FM tactic, get rated by real managers, and join the leaderboard.</div>
+              </div>
+              <button className="px-5 py-2 bg-copper text-bg font-sans text-xs font-medium border-none rounded-md cursor-pointer whitespace-nowrap transition-all duration-300 flex-shrink-0 hover:bg-copper-bright">
+                Submit tactic →
+              </button>
+            </div>
+          </div>
+
+          {/* Load more */}
+          <div className="text-center pt-2">
+            <button className="px-7 py-2 bg-surface border border-border rounded-md text-cream-secondary text-[13px] font-sans cursor-pointer transition-all duration-300 hover:border-copper hover:text-copper">
+              Load more tactics →
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

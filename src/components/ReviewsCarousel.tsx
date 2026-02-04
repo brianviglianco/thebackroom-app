@@ -72,11 +72,7 @@ function MiniStars({ rating, label }: { rating: number; label: string }) {
   );
 }
 
-interface ReviewCardProps {
-  review: typeof REVIEWS[0];
-}
-
-function ReviewCard({ review }: ReviewCardProps) {
+function ReviewCard({ review }: { review: typeof REVIEWS[0] }) {
   return (
     <div className="bg-surface border border-border rounded-[10px] p-4 md:p-5 flex flex-col h-full">
       {/* Header */}
@@ -126,29 +122,26 @@ function ReviewCard({ review }: ReviewCardProps) {
 }
 
 export default function ReviewsCarousel() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [displayedPage, setDisplayedPage] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayedIndex, setDisplayedIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [slideState, setSlideState] = useState<'idle' | 'sliding-out' | 'sliding-in'>('idle');
-  const currentPageRef = useRef(0);
+  const currentIndexRef = useRef(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const rafRef = useRef<number | null>(null);
 
-  const totalPages = Math.ceil(REVIEWS.length / 2);
+  const totalReviews = REVIEWS.length;
 
-  // goToPage uses functional updater for slideState — zero external deps
-  const goToPage = useCallback((page: number) => {
-    if (page === currentPageRef.current) return;
+  // goToIndex: animate to a specific review index
+  const goToIndex = useCallback((index: number) => {
+    if (index === currentIndexRef.current) return;
     setSlideState(prev => {
-      if (prev !== 'idle') return prev; // skip if already animating
-      // Phase 1: slide out
+      if (prev !== 'idle') return prev;
       timeoutRef.current = setTimeout(() => {
-        // Phase 2: swap content + position off-screen right
-        setDisplayedPage(page);
-        setCurrentPage(page);
-        currentPageRef.current = page;
+        setDisplayedIndex(index);
+        setCurrentIndex(index);
+        currentIndexRef.current = index;
         setSlideState('sliding-in');
-        // Phase 3: next frame, slide in from right
         rafRef.current = requestAnimationFrame(() => {
           rafRef.current = requestAnimationFrame(() => {
             setSlideState('idle');
@@ -159,20 +152,20 @@ export default function ReviewsCarousel() {
     });
   }, []);
 
-  // nextPage reads ref — stable callback
-  const nextPage = useCallback(() => {
-    const next = (currentPageRef.current + 1) % totalPages;
-    goToPage(next);
-  }, [totalPages, goToPage]);
+  // nextReview: advance by 1
+  const nextReview = useCallback(() => {
+    const next = (currentIndexRef.current + 1) % totalReviews;
+    goToIndex(next);
+  }, [totalReviews, goToIndex]);
 
-  // Auto-rotate: only re-runs when isPaused changes (nextPage is stable)
+  // Auto-rotate every 10s
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(nextPage, 10000);
+    const interval = setInterval(nextReview, 10000);
     return () => clearInterval(interval);
-  }, [isPaused, nextPage]);
+  }, [isPaused, nextReview]);
 
-  // Cleanup on unmount
+  // Cleanup
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -180,12 +173,7 @@ export default function ReviewsCarousel() {
     };
   }, []);
 
-  // Get current pair of reviews based on displayedPage
-  const startIdx = displayedPage * 2;
-  const visibleReviews = REVIEWS.slice(startIdx, startIdx + 2);
-  if (visibleReviews.length === 1) {
-    visibleReviews.push(REVIEWS[0]);
-  }
+  const visibleReview = REVIEWS[displayedIndex];
 
   return (
     <section className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-12">
@@ -202,34 +190,30 @@ export default function ReviewsCarousel() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* Desktop: 2 cards, Mobile: 1 card — with slide transition */}
+        {/* Single review card with slide animation */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5"
+          className="max-w-[720px]"
           style={{
             transition: slideState === 'sliding-in' ? 'none' : 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease',
             transform: slideState === 'sliding-out' ? 'translateX(-40px)' : slideState === 'sliding-in' ? 'translateX(40px)' : 'translateX(0)',
             opacity: slideState === 'idle' ? 1 : 0,
           }}
         >
-          {visibleReviews.map((review, idx) => (
-            <div key={`${displayedPage}-${idx}`} className={`${idx === 1 ? 'hidden md:block' : ''}`}>
-              <ReviewCard review={review} />
-            </div>
-          ))}
+          <ReviewCard review={visibleReview} />
         </div>
 
         {/* Dot navigation */}
-        <div className="flex items-center justify-center gap-2 mt-5">
-          {Array.from({ length: totalPages }).map((_, idx) => (
+        <div className="flex items-center justify-start gap-2 mt-5">
+          {REVIEWS.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => goToPage(idx)}
+              onClick={() => goToIndex(idx)}
               className={`w-2 h-2 rounded-full transition-all duration-300 border-none cursor-pointer ${
-                idx === currentPage
+                idx === currentIndex
                   ? 'bg-copper w-5'
                   : 'bg-cream-faint opacity-40 hover:opacity-70'
               }`}
-              aria-label={`Go to page ${idx + 1}`}
+              aria-label={`Go to review ${idx + 1}`}
             />
           ))}
         </div>

@@ -14,7 +14,11 @@ const STYLES = ['Counter-Attack', 'Possession', 'High Press', 'Direct', 'Balance
 const LEVELS = ['Top Club', 'Mid-Table', 'Underdog', 'Lower League', 'Newly Promoted'];
 const WIN_RATES = ['50%+', '60%+', '70%+', '80%+'];
 
-export default function FilterCard() {
+interface FilterCardProps {
+  onSearch?: () => void;
+}
+
+export default function FilterCard({ onSearch }: FilterCardProps) {
   const [selectedFormation, setSelectedFormation] = useState('4-3-3');
   const [selectedStyles, setSelectedStyles] = useState<string[]>(['Counter-Attack']);
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['Underdog']);
@@ -238,9 +242,10 @@ export default function FilterCard() {
         {/* Bottom action bar */}
         <div className="px-4 md:px-7 py-4 md:py-5 pb-5 md:pb-6 flex items-center justify-end">
           <button
+            onClick={onSearch}
             className="px-7 py-2.5 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 flex items-center gap-2 shadow-[0_4px_16px_rgba(196,135,90,0.25)] flex-shrink-0 hover:bg-copper-bright hover:-translate-y-0.5"
           >
-            SHOW <span className="font-mono font-medium bg-[rgba(16,14,12,0.25)] px-2 py-0.5 rounded text-xs">23</span> TACTICS &rarr;
+            Show <span className="font-mono font-medium bg-[rgba(16,14,12,0.25)] px-2 py-0.5 rounded text-xs">23</span> tactics &rarr;
           </button>
         </div>
       </div>

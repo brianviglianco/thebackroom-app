@@ -60,7 +60,7 @@ export default function Newsletter() {
                   type="submit"
                   className="px-6 py-3 bg-copper border-none rounded-[7px] text-bg text-[13px] font-medium font-sans cursor-pointer transition-all duration-300 whitespace-nowrap shadow-[0_4px_16px_rgba(196,135,90,0.25)] hover:bg-copper-bright hover:-translate-y-0.5"
                 >
-                  SUBSCRIBE
+                  Subscribe
                 </button>
               </form>
             ) : (
