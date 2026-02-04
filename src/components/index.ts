@@ -10,4 +10,5 @@ export { default as Newsletter } from './Newsletter';
 export { default as NewsletterCompact } from './NewsletterCompact';
 export { default as ReviewsCarousel } from './ReviewsCarousel';
 export { default as TheDugout } from './TheDugout';
+export { default as SubmitCTA } from './SubmitCTA';
 export { default as Footer } from './Footer';

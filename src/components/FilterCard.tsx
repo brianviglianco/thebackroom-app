@@ -50,8 +50,7 @@ export default function FilterCard({ onSearch }: FilterCardProps) {
         {/* Header */}
         <div className="px-4 md:px-8 py-4 md:py-6 pb-4 md:pb-5 flex flex-col md:flex-row md:items-center justify-between border-b border-border gap-2">
           <div className="flex items-baseline gap-2.5">
-            <h2 className="font-serif text-[20px] md:text-[24px] font-normal">Explore Tactics</h2>
-            <span className="text-[12px] md:text-[14px] text-cream-muted font-light hidden sm:inline">Select filters to find your tactic</span>
+            <h2 className="font-serif text-[20px] md:text-[24px] font-normal">Explore tactics</h2>
           </div>
           <button className="font-mono text-[10px] text-cream-muted cursor-pointer transition-colors duration-300 hover:text-copper bg-transparent border-none self-start md:self-auto">
             Reset all filters

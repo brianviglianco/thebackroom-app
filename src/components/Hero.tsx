@@ -63,8 +63,8 @@ export default function Hero() {
           for <em className="italic font-light text-copper">your save</em>
         </h1>
         <p className="text-[13px] md:text-[15px] text-cream-secondary max-w-[440px] leading-relaxed font-light mb-6 md:mb-7">
-          Every tactic has a measured win rate, structured reviews with match data,<br className="hidden md:inline" />
-          and context by version, level, and style.
+          Football Manager tactics backed by real saves, real data,<br className="hidden md:inline" />
+          and real results. No hype, just evidence.
         </p>
         <div className="flex items-center gap-3 md:gap-4">
           <button

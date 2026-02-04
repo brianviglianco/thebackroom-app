@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const REVIEWS = [
   {
@@ -118,25 +118,62 @@ function ReviewCard({ review }: ReviewCardProps) {
 
 export default function ReviewsCarousel() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [displayedPage, setDisplayedPage] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [slideState, setSlideState] = useState<'idle' | 'sliding-out' | 'sliding-in'>('idle');
+  const currentPageRef = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rafRef = useRef<number | null>(null);
 
-  // Desktop shows 2, so we need ceil(5/2) = 3 pages
   const totalPages = Math.ceil(REVIEWS.length / 2);
 
-  const nextPage = useCallback(() => {
-    setCurrentPage(prev => (prev + 1) % totalPages);
-  }, [totalPages]);
+  // goToPage uses functional updater for slideState — zero external deps
+  const goToPage = useCallback((page: number) => {
+    if (page === currentPageRef.current) return;
+    setSlideState(prev => {
+      if (prev !== 'idle') return prev; // skip if already animating
+      // Phase 1: slide out
+      timeoutRef.current = setTimeout(() => {
+        // Phase 2: swap content + position off-screen right
+        setDisplayedPage(page);
+        setCurrentPage(page);
+        currentPageRef.current = page;
+        setSlideState('sliding-in');
+        // Phase 3: next frame, slide in from right
+        rafRef.current = requestAnimationFrame(() => {
+          rafRef.current = requestAnimationFrame(() => {
+            setSlideState('idle');
+          });
+        });
+      }, 250);
+      return 'sliding-out';
+    });
+  }, []);
 
+  // nextPage reads ref — stable callback
+  const nextPage = useCallback(() => {
+    const next = (currentPageRef.current + 1) % totalPages;
+    goToPage(next);
+  }, [totalPages, goToPage]);
+
+  // Auto-rotate: only re-runs when isPaused changes (nextPage is stable)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(nextPage, 5000);
     return () => clearInterval(interval);
   }, [isPaused, nextPage]);
 
-  // Get current pair of reviews
-  const startIdx = currentPage * 2;
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Get current pair of reviews based on displayedPage
+  const startIdx = displayedPage * 2;
   const visibleReviews = REVIEWS.slice(startIdx, startIdx + 2);
-  // If we only have 1 review left (odd total), wrap around
   if (visibleReviews.length === 1) {
     visibleReviews.push(REVIEWS[0]);
   }
@@ -156,10 +193,17 @@ export default function ReviewsCarousel() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* Desktop: 2 cards, Mobile: 1 card */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 transition-opacity duration-500">
+        {/* Desktop: 2 cards, Mobile: 1 card — with slide transition */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5"
+          style={{
+            transition: slideState === 'sliding-in' ? 'none' : 'transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease',
+            transform: slideState === 'sliding-out' ? 'translateX(-40px)' : slideState === 'sliding-in' ? 'translateX(40px)' : 'translateX(0)',
+            opacity: slideState === 'idle' ? 1 : 0,
+          }}
+        >
           {visibleReviews.map((review, idx) => (
-            <div key={`${currentPage}-${idx}`} className={`${idx === 1 ? 'hidden md:block' : ''}`}>
+            <div key={`${displayedPage}-${idx}`} className={`${idx === 1 ? 'hidden md:block' : ''}`}>
               <ReviewCard review={review} />
             </div>
           ))}
@@ -170,7 +214,7 @@ export default function ReviewsCarousel() {
           {Array.from({ length: totalPages }).map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setCurrentPage(idx)}
+              onClick={() => goToPage(idx)}
               className={`w-2 h-2 rounded-full transition-all duration-300 border-none cursor-pointer ${
                 idx === currentPage
                   ? 'bg-copper w-5'
