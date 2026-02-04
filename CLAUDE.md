@@ -55,10 +55,10 @@ src/
 │   ├── HeroCanvas.tsx     # Canvas animation (tactical match sim, hidden on mobile)
 │   ├── QuickStart.tsx     # UNUSED — kept for reference, removed from homepage
 │   ├── FilterCard.tsx     # "Explore Tactics" filter panel (always open, 4-col grid)
-│   ├── ResultsGrid.tsx    # Grid of tactic cards with sorting (4->2->1 col), always visible
+│   ├── ResultsGrid.tsx    # Grid of tactic cards with sorting (4->2->1 col). Collapsed by default with "Don't know where to start?" CTA; expands on click or filter search
 │   ├── TacticCard.tsx     # 3-face flip card (formation/stats/quote)
 │   ├── StaffPicks.tsx     # Curated editor selections with featured pick
-│   ├── ReviewsCarousel.tsx # Auto-rotating review cards with slide animation (10s interval)
+│   ├── ReviewsCarousel.tsx # Auto-rotating review cards (8s interval), shift-by-1, 2 cards on desktop
 │   ├── TheDugout.tsx      # Top Creators leaderboard (podium + data table, sortable)
 │   ├── HowItWorks.tsx     # 3-step explainer (Browse/Verified Data/Download & Rate). Not on homepage, linked from nav
 │   ├── Newsletter.tsx     # "The Matchday Brief" weekly email signup
@@ -102,11 +102,11 @@ src/
 
 1. **Navigation** — Fixed sticky navbar. Logo + search + links (How It Works, Tactics, Ranking, Creators, About) + Submit/Login/Signup. Hamburger menu on mobile with dropdown. Search expands to 520px on focus.
 2. **Hero** — "Find the right tactic for your save." Subtitle: "Football Manager tactics backed by real saves, real data, and real results. No hype, just evidence." Canvas match simulation on right (hidden on mobile). Shows tactic name (e.g. "COUNTER-ATTACK") bottom-right in copper mono. 5 scripted tactical sequences cycle automatically. Social proof bar below CTAs.
-3. **FilterCard** (Explore Tactics) — Always open filter panel. 4-column filter grid: Formation picker, Playing Style chips, Team Level chips, FM Version + Rating + Win Rate. CTA button "SHOW 23 TACTICS →" aligned right. "Reset all" always visible. Hero CTA scrolls here.
-4. **ResultsGrid** — Always visible 4-col tactic card grid (2 on tablet, 1 on mobile). Sort by rating/win rate/downloads/newest. Contains inline submit tactic CTA and "LOAD MORE TACTICS" button.
+3. **FilterCard** (Explore Tactics) — Always open filter panel. 4-column filter grid: Formation picker, Playing Style chips, Team Level chips, FM Version + Rating + Win Rate. CTA button "Show 23 tactics →" (sentence case, copper) aligned right. "RESET ALL" always visible. Hero CTA scrolls here. Clicking "Show tactics" expands ResultsGrid.
+4. **ResultsGrid** — Collapsed by default: shows "Don't know where to start?" CTA box with "Browse all tactics →" button. Expands to 4-col tactic card grid (2 on tablet, 1 on mobile) on click or via FilterCard search. Sort by rating/win rate/downloads/newest. Contains inline submit tactic CTA and "Load more tactics →" button.
 5. **StaffPicks** (⭐ Editor's Selection) — Featured #1 pick with large card (editor quote, stats, formation visual, achievement pills) + 2 secondary picks (#2, #3) in smaller cards. Monthly curated selection.
-6. **ReviewsCarousel** (What Managers are saying) — Eyebrow "💬 From the Touchline". Auto-rotating review cards (10s interval) with horizontal slide animation. 2 cards on desktop, 1 on mobile. Dot navigation, pause on hover. Includes one 3-star review for credibility. Uses `useRef` pattern for stable `setInterval`.
-7. **TheDugout** (Top Creators) — Eyebrow "🏟️ From the Backroom". Sortable creator leaderboard (Rating/Downloads/Tactics). Top 3 as large cards with rank numbers, verified pills, specialty chips. Ranks 4+ as data table.
+6. **ReviewsCarousel** (What Managers are saying) — Eyebrow "💬 From the Touchline". 2 cards on desktop, 1 on mobile. Shift-by-1 carousel: advances 1 position per rotation (8s interval), so visible cards overlap between transitions. Dot navigation (1 per review), pause on hover. Includes one 3-star review for credibility.
+7. **TheDugout** (Top Creators) — Eyebrow "🏟️ From the Backroom". "Sort:" label + sortable toggle buttons (Rating/Downloads/Tactics). Top 3 as large cards with rank numbers, verified pills, specialty chips. Ranks 4+ as data table.
 8. **Newsletter** (📬 Newsletter) — "The Matchday Brief" email signup with copper gradient card. "Top tactics, trending shapes, and creator spotlights—delivered Fridays." Join 2,400+ FM managers.
 9. **Footer** — Brand + social links, Browse/Community/About nav columns.
 
@@ -127,14 +127,16 @@ src/
 - Hero title: "Find the *right* tactic for *your save*" (right/your save in copper italic)
 - Hero subtitle: "Football Manager tactics backed by real saves, real data, and real results. No hype, just evidence."
 - Search placeholder: "Search anything..." (not just tactics -- future-proofed)
-- Quick start section: eyebrow "🚀 Quick start", subtitle "Pick a common scenario to get started"
+- Quick start section: UNUSED — removed from homepage
 - Reviews section: eyebrow "💬 From the Touchline", title "What Managers are saying"
 - Creators section: eyebrow "🏟️ From the Backroom", title "Top Creators"
 - Newsletter: eyebrow "📬 Newsletter", title "The Matchday Brief", sub "Top tactics, trending shapes, and creator spotlights—delivered Fridays."
 - Browser tab: "The Backroom - Football Manager tactics, rated and reviewed by the community."
 - Favicon: SVG pitch icon at `/public/icon.svg`
 - Capitalization: lowercase everywhere, only capitalize when grammatically correct (no Title Case)
-- **CTAs: ALL call-to-action buttons/links on the homepage use UPPERCASE text** (e.g., "FIND YOUR NEXT TACTIC", "BROWSE ALL TACTICS →", "SUBSCRIBE")
+- **CTAs: Two styles on homepage:**
+  - **Copper buttons** (bg-copper): sentence case (e.g., "Find your next tactic", "Show 23 tactics →", "Browse all tactics →", "Subscribe")
+  - **Non-copper links/buttons**: UPPERCASE (e.g., "ALL REVIEWS →", "PAST EDITIONS →", "ALL CREATORS →", "VIEW PROFILE →", "SEE TOP CREATORS →", "RESET ALL")
 
 ## Brand Voice
 
@@ -164,8 +166,8 @@ NEXT_PUBLIC_ADS_ENABLED
 - Tactic cards use multi-face hover animation (CSS transforms, 3 faces)
 - Image optimization configured in `next.config.js` for external domains
 - Navigation uses hamburger menu pattern with state toggle on mobile
-- ReviewsCarousel uses `useRef` + functional state updater for stable `setInterval` (avoids stale closure bug)
-- ReviewsCarousel slide animation: 3-state machine (`idle` → `sliding-out` → `sliding-in` → `idle`) with `translateX` + `opacity`
+- ReviewsCarousel: shift-by-1 carousel with 3 cards rendered (current, current+1, current+2), CSS `translateX` slide animation (400ms). Circular wrapping via modulo. 8s auto-rotate with `useRef` for stable index tracking.
+- ResultsGrid: collapsed/expanded pattern controlled from page.tsx via `expanded`/`onExpand` props. FilterCard `onSearch` also expands it.
 - TheDugout uses `useMemo` for sorted creator array, `useState` for sort key
 - TheDugout has two tiers: PodiumCard (top 3) + CreatorTableRow (rank 4+)
 
@@ -282,22 +284,24 @@ Full spec in docs/ARCHITECTURE.md. Key sections:
 
 ## What's Built (as of Feb 2026)
 
-- Full homepage with 10 sections, polished design, fully responsive/mobile-ready
+- Full homepage with 9 sections, polished design, fully responsive/mobile-ready
 - Dark theme only (warm charcoal + copper)
 - All data is hardcoded/mock (no Supabase integration yet)
 - No routing beyond homepage (links exist but pages don't)
 - No auth flow implemented
 - No tactic submission flow
 - Canvas hero animation: 5 tactical sequences (Counter-Attack, Tiki-Taka, Wing Overload, Gegenpressing, Route One) with scripted attacker AND defender spline paths, ball physics with arc, trails, goal flash. Only tactic name shown as overlay (no play-by-play, no "LIVE" label).
-- Quick Start section with 4 compact preset filter cards (Lower League, Counter-Attack, Highest Rated, Possession)
-- Advanced Filters: collapsible panel (collapsed by default), 4-column grid, CTA aligned right
-- Staff Picks section restored: featured #1 pick + 2 secondary picks, monthly curated
-- Reviews carousel with auto-rotation (10s), horizontal slide animation, includes one 3-star review for credibility
-- Top Creators leaderboard with sortable podium (top 3 cards) + data table (rank 4+), verified badges, specialty chips, trending indicators, proof lines
-- Newsletter "The Matchday Brief" restored with email signup
+- Explore Tactics: always-open filter panel with 4-column grid, CTA aligned right. Clicking "Show tactics" expands the results grid below.
+- Results grid: collapsed by default ("Don't know where to start?" CTA), expands to 4-col tactic cards with sort bar, inline submit CTA, load more button.
+- Staff Picks: featured #1 pick + 2 secondary picks, monthly curated
+- Reviews carousel: shift-by-1 (2 cards desktop, 1 mobile), 8s auto-rotate, dot navigation per review, pause on hover. Includes one 3-star review for credibility.
+- Top Creators leaderboard: "Sort:" label + sortable podium (top 3 cards) + data table (rank 4+), verified badges, specialty chips, trending indicators, proof lines
+- Newsletter "The Matchday Brief" with email signup
 - HowItWorks component exists but is not rendered on homepage (linked from nav for future /how-it-works page)
+- QuickStart component exists but is not rendered on homepage (removed, kept for reference)
 - SubmitCTA component exists but is not currently rendered on the page (removed from layout, kept for future use)
-- `docs/` folder has specs for every feature (project-instructions.md and PROJECT-SETUP-INSTRUCTIONS.md were removed as redundant)
+- `docs/` folder has specs for every feature
+- Obsolete mockup files, Community.tsx, NewsletterCompact.tsx deleted
 
 ## What's Next (immediate priorities)
 
